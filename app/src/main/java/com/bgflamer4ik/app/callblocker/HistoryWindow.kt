@@ -1,6 +1,9 @@
 package com.bgflamer4ik.app.callblocker
 
-import androidx.compose.foundation.background
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +18,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -43,14 +45,21 @@ fun HistoryWindow(
         modifier = Modifier
             .padding(6.dp)
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.background)
+            .border(
+                2.dp,
+                MaterialTheme.colorScheme.primaryContainer,
+                RoundedCornerShape(8.dp))
             .clip(RoundedCornerShape(8.dp))
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if (history.isNotEmpty()) {
+            AnimatedVisibility(
+                visible = history.isNotEmpty(),
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
                 LazyColumn(
                     modifier = Modifier
                         .padding(8.dp)
@@ -75,8 +84,9 @@ fun HistoryWindow(
                             ) { Icon(Icons.Default.Delete, contentDescription = "Delete") }
                         }
                         if (isExpanded) {
-                            Column(Modifier.padding(8.dp)
-                                .fillMaxWidth()
+                            Column(
+                                Modifier.padding(8.dp)
+                                    .fillMaxWidth()
                             ) {
 
                                 Text(
@@ -88,8 +98,12 @@ fun HistoryWindow(
                         }
                     }
                 }
-                HorizontalDivider(Modifier.padding(horizontal = 2.dp, vertical = 4.dp))
-            } else {
+            }
+            AnimatedVisibility(
+                visible = history.isEmpty(),
+                enter = fadeIn(),
+                exit = fadeOut()
+                ) {
                 Text(
                     modifier = Modifier.padding(top = 20.dp),
                     text = stringResource(R.string.history_is_empty),

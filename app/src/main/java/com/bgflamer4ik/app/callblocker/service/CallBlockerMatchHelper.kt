@@ -31,12 +31,6 @@ object CallBlockerMatchHelper {
             return false
         }
 
-        /*
-        if (data.getBlockUndefined() && !isInContact) {
-            lazyLogOut('u', number)
-            return !white.any { isMatchesNumber(number, it) }
-        } */
-
         if (black.any { isMatchesNumber(number, it) }) {
             addToHistory(db, number, true, 2)
             return true

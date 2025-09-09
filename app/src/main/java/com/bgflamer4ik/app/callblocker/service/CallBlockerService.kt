@@ -33,10 +33,9 @@ class CallBlockerService : CallScreeningService() {
     }
 
     private fun notify(number: String, isBlocked: Boolean) {
-        val context = this.applicationContext
         val text = "$number " +
-                if (isBlocked) context.getString(R.string.notification_is_blocked)
-                else context.getString(R.string.notification_passed)
+                if (isBlocked) this.getString(R.string.notification_is_blocked)
+                else this.getString(R.string.notification_passed)
 
         val intent = Intent(this, NotificationService::class.java)
             .putExtra("text", text)

@@ -1,23 +1,27 @@
 package com.bgflamer4ik.app.callblocker
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -32,8 +36,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bgflamer4ik.app.callblocker.SettingsHelper.numberCorrector
 import com.bgflamer4ik.app.callblocker.database.NumberData
-import com.bgflamer4ik.app.callblocker.service.CallBlockerMatchHelper
 
 @Composable
 fun ListWindow(
@@ -50,7 +54,14 @@ fun ListWindow(
             .clip(RoundedCornerShape(8.dp))
             .border(2.dp, MaterialTheme.colorScheme.secondaryContainer, RoundedCornerShape(16.dp))
     ) {
-        if (list.isNotEmpty()) {
+        AnimatedVisibility(
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth(),
+            visible = list.isNotEmpty(),
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
             LazyColumn(
                 modifier = Modifier
                     .padding(8.dp)
@@ -58,55 +69,65 @@ fun ListWindow(
             ) {
                 items(list) {
                     var isEdit by remember { mutableStateOf(false) }
-                    var number = it.number
+                    var number by remember { mutableStateOf(it.number) }
                     Row(
                         modifier = Modifier
-                            .padding(8.dp)
                             .fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         OutlinedTextField(
                             modifier = Modifier
-                                .width(200.dp),
+                                .requiredWidth(250.dp)
+                                .defaultMinSize(minWidth = 100.dp),
                             value = number,
                             enabled = isEdit,
-                            onValueChange = { num -> number = num }
+                            onValueChange = { num -> number = numberCorrector(num).number }
                         )
                         Row(
-                            horizontalArrangement = Arrangement.SpaceBetween
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .requiredWidth(100.dp),
+                            horizontalArrangement = Arrangement.Absolute.Right
                         ) {
-                            Button(
-                                modifier = Modifier.size(50.dp),
+                            IconButton(
+                                modifier = Modifier
+                                    .requiredSize(50.dp)
+                                    .background(
+                                        MaterialTheme.colorScheme.secondaryContainer,
+                                        RoundedCornerShape(16.dp)
+                                    ),
                                 onClick = {
                                     if (isEdit) {
-                                        onEdit(
-                                            it,
-                                            NumberData(
-                                                number,
-                                                number != CallBlockerMatchHelper.patternToRegex(
-                                                    number
-                                                ).toString()
-                                            )
-                                        )
+                                        val tmp = numberCorrector(number)
+                                        onEdit(it, tmp)
+                                        number = tmp.number
                                     }
                                     isEdit = !isEdit
                                 }
                             ) {
                                 Icon(
-                                    modifier = Modifier.fillMaxSize(),
+                                    modifier = Modifier
+                                        .fillMaxSize(),
+                                    tint = MaterialTheme.colorScheme.secondary,
                                     imageVector = Icons.Default.Create,
                                     contentDescription =
                                         if (isEdit) stringResource(R.string.return_button_text)
                                         else stringResource(R.string.edit_button_text)
                                 )
                             }
-                            Button(
-                                modifier = Modifier.size(50.dp),
+                            IconButton(
+                                modifier = Modifier
+                                    .requiredSize(50.dp)
+                                    .background(
+                                        MaterialTheme.colorScheme.secondaryContainer,
+                                        RoundedCornerShape(16.dp)
+                                    ),
                                 enabled = !isEdit,
                                 onClick = { onDelete(it) }
                             ) {
                                 Icon(
                                     modifier = Modifier.fillMaxSize(),
+                                    tint = MaterialTheme.colorScheme.secondary,
                                     imageVector = Icons.Default.Delete,
                                     contentDescription = stringResource(R.string.delete_button_text)
                                 )
@@ -115,9 +136,18 @@ fun ListWindow(
                     }
                 }
             }
-        } else {
+        }
+        AnimatedVisibility(
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth(),
+            visible = list.isEmpty(),
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
             Text(
                 modifier = Modifier.padding(8.dp),
+                maxLines = 2,
                 text = "$title " + stringResource(R.string.is_empty),
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp

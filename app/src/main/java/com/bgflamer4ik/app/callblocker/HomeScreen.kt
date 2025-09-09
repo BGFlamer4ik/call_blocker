@@ -3,23 +3,27 @@ package com.bgflamer4ik.app.callblocker
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -34,11 +38,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bgflamer4ik.app.callblocker.SettingsHelper.numberCorrector
 import com.bgflamer4ik.app.callblocker.database.DataKeys
-import com.bgflamer4ik.app.callblocker.database.NumberData
-import com.bgflamer4ik.app.callblocker.service.CallBlockerMatchHelper.patternToRegex
 
 @Composable
 fun HomeScreen(vm: ApplicationViewModel) {
@@ -53,10 +59,14 @@ fun HomeScreen(vm: ApplicationViewModel) {
             modifier = Modifier
                 .padding(8.dp)
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(2.dp))
+                .clip(RoundedCornerShape(16.dp))
+                .background(
+                    MaterialTheme.colorScheme.secondaryContainer,
+                    RoundedCornerShape(16.dp)
+                )
                 .border(
                     2.dp,
-                    MaterialTheme.colorScheme.secondaryContainer,
+                    MaterialTheme.colorScheme.secondary,
                     RoundedCornerShape(16.dp)
                 )
         ) {
@@ -71,9 +81,10 @@ fun HomeScreen(vm: ApplicationViewModel) {
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp
                 )
-                HorizontalDivider(Modifier.padding(2.dp))
+                HorizontalDivider(Modifier.padding(4.dp))
                 Text(
                     stringResource(R.string.home_screen_short_hint),
+                    maxLines = 2,
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp
                 )
@@ -83,27 +94,40 @@ fun HomeScreen(vm: ApplicationViewModel) {
             modifier = Modifier
                 .padding(8.dp)
                 .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically
         ) {
             OutlinedTextField(
+                modifier = Modifier
+                    .defaultMinSize(minWidth = 100.dp)
+                    .requiredWidth(300.dp),
                 value = fastAdd,
+                maxLines = 1,
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.Unspecified,
+                    autoCorrectEnabled = false,
+                    keyboardType = KeyboardType.Unspecified,
+                    imeAction = ImeAction.Done
+                ),
                 label = { Text(stringResource(R.string.number_fast_add))},
                 onValueChange = { fastAdd = it }
             )
-            Button(
-                modifier = Modifier.size(50.dp),
+            IconButton(
+                modifier = Modifier
+                    .size(50.dp)
+                    .background(
+                        MaterialTheme.colorScheme.secondaryContainer,
+                        RoundedCornerShape(16.dp)
+                    ),
                 enabled = fastAdd.isNotEmpty(),
                 onClick = {
-                    val numberData = NumberData(
-                        fastAdd,
-                        fastAdd != patternToRegex(fastAdd).toString()
-                    )
-                    vm.add(numberData, DataKeys.blackListKey)
+                    val number = numberCorrector(fastAdd)
+                    vm.add(number, DataKeys.blackListKey)
                 }
             ) {
                 Icon(
                     Icons.Default.PlayArrow,
+                    tint = MaterialTheme.colorScheme.secondary,
                     modifier = Modifier
                         .fillMaxSize(),
                     contentDescription = stringResource(R.string.button_add_to_blacklist_desc)
@@ -111,23 +135,36 @@ fun HomeScreen(vm: ApplicationViewModel) {
             }
         }
         Spacer(Modifier.height(8.dp))
-        AnimatedVisibility(
-            visible = history.isNotEmpty(),
-            enter = fadeIn(),
-            exit = fadeOut()
+        Column(
+            modifier = Modifier
+                .padding(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            HistoryWindow(vm)
-        }
-        AnimatedVisibility(
-            visible = history.isEmpty(),
-            enter = fadeIn(),
-            exit = fadeOut()
-        ) {
-            Text(
-                stringResource(R.string.home_screen_short_hint_history),
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp
-            )
+            AnimatedVisibility(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxWidth(),
+                visible = history.isNotEmpty(),
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
+                HistoryWindow(vm)
+            }
+            AnimatedVisibility(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxWidth(),
+                visible = history.isEmpty(),
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
+                Text(
+                    stringResource(R.string.home_screen_short_hint_history),
+                    maxLines = 3,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp
+                )
+            }
         }
     }
 }

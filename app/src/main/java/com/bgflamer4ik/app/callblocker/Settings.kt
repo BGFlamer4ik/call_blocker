@@ -108,6 +108,7 @@ private fun SettingsBlock(
         ) {
             Text(
                 text = text,
+                maxLines = 2,
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp
             )

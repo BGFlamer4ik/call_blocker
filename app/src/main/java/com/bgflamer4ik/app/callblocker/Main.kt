@@ -1,5 +1,6 @@
 package com.bgflamer4ik.app.callblocker
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -31,6 +32,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.bgflamer4ik.app.callblocker.RequestDialogHelper.RenderDialogs
 import com.bgflamer4ik.app.callblocker.database.DBHelper
+import com.bgflamer4ik.app.callblocker.service.NotificationService
 import com.bgflamer4ik.app.callblocker.ui.theme.MainTheme
 import kotlinx.coroutines.launch
 
@@ -38,10 +40,15 @@ class Main : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         DBHelper.updateKeys(this)
+
+        val intent = Intent(this, NotificationService::class.java)
+        startForegroundService(intent)
+
         enableEdgeToEdge()
         setContent {
             MainTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
+                    RequestPermission(LocalContext.current)
                     RenderDialogs()
                     MainScreen()
                 }
@@ -58,7 +65,6 @@ fun MainScreen() {
     val vm: ApplicationViewModel = viewModel()
     val navController = rememberNavController()
 
-    RequestPermission(LocalContext.current)
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -89,8 +95,8 @@ fun MainScreen() {
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        titleContentColor = MaterialTheme.colorScheme.onPrimary
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        titleContentColor = MaterialTheme.colorScheme.primary
                     ),
                 )
             },

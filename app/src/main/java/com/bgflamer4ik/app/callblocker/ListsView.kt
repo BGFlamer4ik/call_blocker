@@ -7,6 +7,7 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -29,9 +30,8 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bgflamer4ik.app.callblocker.SettingsHelper.numberCorrector
 import com.bgflamer4ik.app.callblocker.database.DataKeys
-import com.bgflamer4ik.app.callblocker.database.NumberData
-import com.bgflamer4ik.app.callblocker.service.CallBlockerMatchHelper.patternToRegex
 
 @Composable
 fun ListsView(vm: ApplicationViewModel) {
@@ -40,8 +40,8 @@ fun ListsView(vm: ApplicationViewModel) {
 
     val blacklist by vm.blacklist.collectAsState()
     val whitelist by vm.whitelist.collectAsState()
-    var isWhiteSelected by remember { mutableStateOf(false) }
 
+    var isWhiteSelected by remember { mutableStateOf(false) }
     var numberToAdd by remember { mutableStateOf("") }
 
     Column(
@@ -71,7 +71,9 @@ fun ListsView(vm: ApplicationViewModel) {
             }
         }
         OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .defaultMinSize(minWidth = 100.dp),
             label = { Text(stringResource(R.string.number)) },
             value = numberToAdd,
             keyboardOptions = KeyboardOptions(
@@ -88,24 +90,12 @@ fun ListsView(vm: ApplicationViewModel) {
             modifier = Modifier.fillMaxWidth(),
             enabled = numberToAdd.isNotEmpty(),
             onClick = {
-                if (numberToAdd.startsWith("+") || numberToAdd.startsWith("*")) {
-                    if (numberToAdd.contains("[") && !numberToAdd.contains("]")) {
-                        numberToAdd += "]"
-                    }
-                    val data = NumberData(
-                        numberToAdd,
-                        numberToAdd != patternToRegex(numberToAdd).toString()
-                    )
-                    vm.add(
-                        data,
-                        if (isWhiteSelected) DataKeys.whitelistKey else DataKeys.blackListKey
-                    )
-                    numberToAdd = ""
-                } else {
-                    Toast.makeText(context, context.getString(R.string.number_adding_hint_startwith), Toast.LENGTH_SHORT).show()
+                val number = numberCorrector(numberToAdd)
+                val listName = if (isWhiteSelected) DataKeys.whitelistKey else DataKeys.blackListKey
+                vm.add(number, listName)
+                numberToAdd = ""
                 }
-            }
-        ) {
+            ) {
             Text(
                 text = stringResource(R.string.add_to),
                 fontWeight = FontWeight.Bold,
