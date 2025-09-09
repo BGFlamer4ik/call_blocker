@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">Call Blocker</string>
+
+    <string name="home_screen">Home screen</string>
+    <string name="lists_screen">Lists screen</string>
+    <string name="settings_screen">Settings screen</string>
+
+    <string name="history">History</string>
+    <string name="history_number_blocked">Number is blocked</string>
+    <string name="history_number_passed">Number is passed</string>
+    <string name="history_is_empty">History is empty</string>
+
+    <string name="home_screen_welcome">Welcome!</string>
+    <string name="home_screen_short_hint">For fast add to black list use text field below</string>
+    <string name="home_screen_short_hint_history">Here will be additional history screen</string>
+
+    <string name="button_add_to_blacklist_desc">Add to black list</string>
+
+    <string name="black_list_title">Black list</string>
+    <string name="white_list_title">White list</string>
+    <string name="add_to">Add to</string>
+    <string name="number">Number</string>
+    <string name="number_fast_add">Fast add to Blacklist</string>
+    <string name="number_adding_hint_startwith">Number must starts with + or *</string>
+    
+    <string name="confirm_dialog_accept_button">Accept</string>
+    <string name="confirm_dialog_decline_button">Decline</string>
+
+    <string name="settings_param_block_undefined">Block undefined calls</string>
+    <string name="settings_param_block_all_calls">Block all calls</string>
+    <string name="settings_param_skip_call_log">Skip call log</string>
+    <string name="settings_param_skip_notification">Skip notification</string>
+    <string name="settings_req_dialog_perm_title">Permissions needed</string>
+    <string name="settings_req_dialog_perm_text">Additional permissions needed. For app works correctly, please, grand permission below.</string>
+    
+    <string name="notification_test">This is test notification, enjoy app!</string>
+    <string name="notification_is_blocked">is blocked</string>
+    <string name="notification_passed">passed</string>
+
+    <string name="pattern_edited">Pattern edited</string>
+    <string name="return_button_text">Return</string>
+    <string name="edit_button_text">Edit</string>
+    <string name="delete_button_text">Delete</string>
+    <string name="is_empty">is empty</string>
+    <string name="menu">Menu</string>
+</resources>

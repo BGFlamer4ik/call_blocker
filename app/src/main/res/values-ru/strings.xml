@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Call Blocker</string>
+    <string name="home_screen">Домашний экран</string>
+    <string name="lists_screen">Списки</string>
+    <string name="settings_screen">Настройки</string>
+    <string name="history">История</string>
+    <string name="history_number_blocked">Номер заблокирован</string>
+    <string name="history_number_passed">Номер пропущен</string>
+    <string name="history_is_empty">История пустая</string>
+    <string name="home_screen_welcome">Добро пожаловать!</string>
+    <string name="home_screen_short_hint">Для быстрого добавления номера в ЧС используйте поле снизу</string>
+    <string name="home_screen_short_hint_history">Тут будет дополнительный экран с историей</string>
+    <string name="button_add_to_blacklist_desc">Добавить в черный список</string>
+    <string name="black_list_title">Черный список</string>
+    <string name="white_list_title">Белый список</string>
+    <string name="add_to">Добавить в</string>
+    <string name="number">Номер</string>
+    <string name="number_fast_add">Быстрое добавление в ЧС</string>
+    <string name="number_adding_hint_startwith">Номер должен начинаться с + или *</string>
+    <string name="confirm_dialog_accept_button">Принять</string>
+    <string name="confirm_dialog_decline_button">Отклонить</string>
+    <string name="settings_param_block_undefined">Блокировать неизвестные</string>
+    <string name="settings_param_block_all_calls">Блокировать все звонки</string>
+    <string name="settings_param_skip_call_log">Пропустить журнал звонков</string>
+    <string name="settings_param_skip_notification">Пропустить уведомление</string>
+    <string name="settings_req_dialog_perm_title">Необходимы разрешения</string>
+    <string name="settings_req_dialog_perm_text">Необходимы дополнительные разрешения</string>
+    <string name="notification_test">Это тестовое уведомление, наслаждайтесь приложением!</string>
+    <string name="notification_is_blocked">заблокирован</string>
+    <string name="notification_passed">пропущен</string>
+    <string name="pattern_edited">Паттерн отредактирован</string>
+    <string name="return_button_text">Назад</string>
+    <string name="edit_button_text">Редактировать</string>
+    <string name="delete_button_text">Удалить</string>
+    <string name="is_empty">пуст</string>
+    <string name="menu">Меню</string>
+</resources>
