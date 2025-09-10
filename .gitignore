@@ -17,3 +17,14 @@
 local.properties
 /keystore.properties
 .kotlin
+/app/release/app-release.apk
+/app/release/baselineProfiles/0/app-release.dm
+/app/release/baselineProfiles/1/app-release.dm
+/app/src/main/res/xml/backup_rules.xml
+/build.gradle.kts
+/app/src/main/res/xml/data_extraction_rules.xml
+/app/src/androidTest/java/com/bgflamer4ik/app/callblocker/ExampleInstrumentedTest.kt
+/app/src/test/java/com/bgflamer4ik/app/callblocker/ExampleUnitTest.kt
+/gradle.properties
+/gradle/wrapper/gradle-wrapper.jar
+/gradle/wrapper/gradle-wrapper.properties
