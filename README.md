@@ -16,4 +16,9 @@ Features:
 
 Translations: EN, RU
 
-Design and logo will be updated/modified soon
+Design and logo will be updated/modified soon, i'm not designer 😞 
+
+TODO:
+- Add contact sync for identity undefined call
+- Add manual for new members how to work with patterns 
+- Upgrade this readme.md with photo's
