@@ -26,4 +26,5 @@ object DataKeys {
     const val dataSkipNotification = "skip_notification"
     const val blackListKey = "blacklist"
     const val whitelistKey = "whitelist"
+    const val firstLaunch = "first_launch"
 }

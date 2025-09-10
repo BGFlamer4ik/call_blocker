@@ -21,8 +21,11 @@ object DBHelper {
             DataKeys.dataBlockAll,
             DataKeys.dataBlockUndefined,
             DataKeys.dataSkipNotification,
-            DataKeys.dataSkipCallLog
+            DataKeys.dataSkipCallLog,
         )
+        if (db.getKeySync(DataKeys.firstLaunch) == null) {
+            db.add(KeyData(DataKeys.firstLaunch, "true"))
+        }
         keys.forEach {
             if (db.getKeySync(it) == null) {
                 db.add(KeyData(it, "false"))

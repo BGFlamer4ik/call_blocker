@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.app.role.RoleManager
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.util.Log
@@ -22,8 +23,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.requiredWidthIn
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -33,11 +36,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import com.bgflamer4ik.app.callblocker.database.DataKeys
 
 @Composable
@@ -78,6 +83,33 @@ fun Settings(vm: ApplicationViewModel) {
             skipNotification == "true"
         ) {
             vm.update(DataKeys.dataSkipNotification, it)
+        }
+        SpecialLinks()
+    }
+}
+
+@Composable
+private fun SpecialLinks() {
+    val context = LocalContext.current
+    Column(
+        modifier = Modifier
+            .padding(8.dp)
+            .wrapContentHeight()
+            .requiredWidth(380.dp),
+    ) {
+        Button(
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth(),
+            onClick = {
+                val intent = Intent(
+                    Intent.ACTION_VIEW,
+                    "https://github.com/BGFlamer4ik/call_blocker/releases".toUri()
+                )
+                context.startActivity(intent)
+            }
+        ) {
+            Text("Check GitHub for new releases")
         }
     }
 }

@@ -43,7 +43,7 @@ class NotificationService: Service() {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         val pendingIntent = PendingIntent.getActivity(this, 0,
-            intent, PendingIntent.FLAG_IMMUTABLE)
+            intent, PendingIntent.FLAG_MUTABLE)
 
         return NotificationCompat
             .Builder(this, CHANNEL_ID)

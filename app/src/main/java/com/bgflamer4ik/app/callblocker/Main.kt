@@ -32,6 +32,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.bgflamer4ik.app.callblocker.RequestDialogHelper.RenderDialogs
 import com.bgflamer4ik.app.callblocker.database.DBHelper
+import com.bgflamer4ik.app.callblocker.database.DBRepository
+import com.bgflamer4ik.app.callblocker.database.DataKeys
 import com.bgflamer4ik.app.callblocker.service.NotificationService
 import com.bgflamer4ik.app.callblocker.ui.theme.MainTheme
 import kotlinx.coroutines.launch
@@ -41,8 +43,11 @@ class Main : ComponentActivity() {
         super.onCreate(savedInstanceState)
         DBHelper.updateKeys(this)
 
-        val intent = Intent(this, NotificationService::class.java)
-        startForegroundService(intent)
+        val isFirstLaunch = DBRepository(this).getKeySync(DataKeys.firstLaunch)
+        if (isFirstLaunch == null || isFirstLaunch != "false") {
+            val intent = Intent(this, NotificationService::class.java)
+            startForegroundService(intent)
+        }
 
         enableEdgeToEdge()
         setContent {

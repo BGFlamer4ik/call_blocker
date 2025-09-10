@@ -106,7 +106,11 @@ fun HistoryWindow(
                                 )
                             }
                         }
-                        if (isExpanded) {
+                        AnimatedVisibility(
+                            visible = isExpanded,
+                            enter = fadeIn(),
+                            exit = fadeOut()
+                        ) {
                             Column(
                                 Modifier
                                     .padding(8.dp)
