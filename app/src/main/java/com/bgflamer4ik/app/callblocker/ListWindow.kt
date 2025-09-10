@@ -5,17 +5,21 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
@@ -30,6 +34,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
@@ -46,6 +51,7 @@ fun ListWindow(
     onEdit: (NumberData, NumberData) -> Unit,
     onDelete: (NumberData) -> Unit
 ) {
+    val scroll = rememberScrollState()
     Box(
         modifier = Modifier
             .padding(6.dp)
@@ -57,7 +63,8 @@ fun ListWindow(
         AnimatedVisibility(
             modifier = Modifier
                 .padding(8.dp)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .horizontalScroll(scroll),
             visible = list.isNotEmpty(),
             enter = fadeIn(),
             exit = fadeOut()
@@ -72,8 +79,10 @@ fun ListWindow(
                     var number by remember { mutableStateOf(it.number) }
                     Row(
                         modifier = Modifier
+                            .padding(4.dp)
                             .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         OutlinedTextField(
                             modifier = Modifier
@@ -83,6 +92,7 @@ fun ListWindow(
                             enabled = isEdit,
                             onValueChange = { num -> number = numberCorrector(num).number }
                         )
+                        Spacer(Modifier.size(2.dp))
                         Row(
                             modifier = Modifier
                                 .fillMaxSize()
@@ -92,6 +102,7 @@ fun ListWindow(
                             IconButton(
                                 modifier = Modifier
                                     .requiredSize(50.dp)
+                                    .padding(8.dp)
                                     .background(
                                         MaterialTheme.colorScheme.secondaryContainer,
                                         RoundedCornerShape(16.dp)
@@ -115,9 +126,11 @@ fun ListWindow(
                                         else stringResource(R.string.edit_button_text)
                                 )
                             }
+                            Spacer(Modifier.size(2.dp))
                             IconButton(
                                 modifier = Modifier
                                     .requiredSize(50.dp)
+                                    .padding(8.dp)
                                     .background(
                                         MaterialTheme.colorScheme.secondaryContainer,
                                         RoundedCornerShape(16.dp)

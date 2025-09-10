@@ -12,6 +12,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,9 +20,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.layout.requiredWidthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -38,7 +40,6 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import com.bgflamer4ik.app.callblocker.database.DataKeys
 
-
 @Composable
 fun Settings(vm: ApplicationViewModel) {
     val scrollState = rememberScrollState()
@@ -52,7 +53,7 @@ fun Settings(vm: ApplicationViewModel) {
         modifier = Modifier
             .fillMaxSize()
             .padding(8.dp)
-            .verticalScroll(scrollState)
+            .horizontalScroll(scrollState)
     ) {
         SettingsBlock(
             stringResource(R.string.settings_param_block_undefined),
@@ -101,14 +102,17 @@ private fun SettingsBlock(
     ) {
         Row(
             modifier = Modifier
+                .requiredWidthIn(min = 120.dp)
                 .padding(all = 8.dp)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
+                modifier = Modifier
+                    .requiredWidth(320.dp),
                 text = text,
-                maxLines = 2,
+                maxLines = 3,
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp
             )

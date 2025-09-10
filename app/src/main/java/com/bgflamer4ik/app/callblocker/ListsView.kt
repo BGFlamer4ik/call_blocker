@@ -72,6 +72,7 @@ fun ListsView(vm: ApplicationViewModel) {
         }
         OutlinedTextField(
             modifier = Modifier
+                .padding(horizontal = 8.dp)
                 .fillMaxWidth()
                 .defaultMinSize(minWidth = 100.dp),
             label = { Text(stringResource(R.string.number)) },
@@ -87,7 +88,9 @@ fun ListsView(vm: ApplicationViewModel) {
             }
         )
         Button(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
             enabled = numberToAdd.isNotEmpty(),
             onClick = {
                 val number = numberCorrector(numberToAdd)

@@ -3,22 +3,26 @@ package com.bgflamer4ik.app.callblocker
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,6 +44,7 @@ import com.bgflamer4ik.app.callblocker.database.DBHelper
 fun HistoryWindow(
     vm: ApplicationViewModel
 ) {
+    val scroll = rememberScrollState()
     val history by vm.history.collectAsState()
     Box(
         modifier = Modifier
@@ -52,7 +57,10 @@ fun HistoryWindow(
             .clip(RoundedCornerShape(8.dp))
     ) {
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp)
+                .horizontalScroll(scroll),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AnimatedVisibility(
@@ -73,27 +81,49 @@ fun HistoryWindow(
                                 .fillMaxWidth()
                         ) {
                             Text(
-                                modifier = Modifier.clickable(
-                                    onClick = { isExpanded = !isExpanded }
-                                ),
+                                modifier = Modifier
+                                    .clickable(
+                                        onClick = { isExpanded = !isExpanded })
+                                    .requiredWidth(320.dp),
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 20.sp,
                                 text = it.number
                             )
-                            Button(
-                                modifier = Modifier.size(50.dp),
+                            IconButton(
+                                modifier = Modifier
+                                    .requiredSize(50.dp)
+                                    .padding(8.dp)
+                                    .background(
+                                        MaterialTheme.colorScheme.secondaryContainer,
+                                        RoundedCornerShape(16.dp)
+                                    ),
                                 onClick = { vm.remove(it) }
-                            ) { Icon(Icons.Default.Delete, contentDescription = "Delete") }
+                            ) {
+                                Icon(
+                                    Icons.Default.Delete,
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentDescription = stringResource(R.string.delete_button_text)
+                                )
+                            }
                         }
                         if (isExpanded) {
                             Column(
-                                Modifier.padding(8.dp)
-                                    .fillMaxWidth()
+                                Modifier
+                                    .padding(8.dp)
+                                    .fillParentMaxWidth()
                             ) {
 
                                 Text(
                                     if (it.block) stringResource(R.string.history_number_blocked)
-                                    else stringResource(R.string.history_number_passed)
+                                    else stringResource(R.string.history_number_passed),
+                                    modifier = Modifier
+                                        .padding(8.dp)
+                                        .fillMaxWidth()
                                 )
-                                Text(DBHelper.patternDecrypt(it.pattern))
+                                Text(
+                                    DBHelper.patternDecrypt(it.pattern),
+                                    modifier = Modifier.fillMaxWidth()
+                                )
                             }
                         }
                     }
