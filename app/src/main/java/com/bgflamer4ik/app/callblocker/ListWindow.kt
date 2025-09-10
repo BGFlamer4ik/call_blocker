@@ -24,6 +24,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -103,6 +104,10 @@ fun ListWindow(
                                 modifier = Modifier
                                     .requiredSize(50.dp)
                                     .padding(8.dp)
+                                    .border(2.dp,
+                                        MaterialTheme.colorScheme.secondary,
+                                        RoundedCornerShape(16.dp)
+                                    )
                                     .background(
                                         MaterialTheme.colorScheme.secondaryContainer,
                                         RoundedCornerShape(16.dp)
@@ -120,7 +125,8 @@ fun ListWindow(
                                     modifier = Modifier
                                         .fillMaxSize(),
                                     tint = MaterialTheme.colorScheme.secondary,
-                                    imageVector = Icons.Default.Create,
+                                    imageVector = if (isEdit) Icons.Default.Done
+                                        else Icons.Default.Create,
                                     contentDescription =
                                         if (isEdit) stringResource(R.string.return_button_text)
                                         else stringResource(R.string.edit_button_text)
@@ -131,6 +137,11 @@ fun ListWindow(
                                 modifier = Modifier
                                     .requiredSize(50.dp)
                                     .padding(8.dp)
+                                    .border(2.dp,
+                                        if (!isEdit) MaterialTheme.colorScheme.secondary
+                                            else MaterialTheme.colorScheme.secondaryContainer,
+                                        RoundedCornerShape(16.dp)
+                                    )
                                     .background(
                                         MaterialTheme.colorScheme.secondaryContainer,
                                         RoundedCornerShape(16.dp)

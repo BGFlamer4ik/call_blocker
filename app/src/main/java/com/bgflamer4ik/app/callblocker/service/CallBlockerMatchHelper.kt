@@ -47,11 +47,11 @@ object CallBlockerMatchHelper {
         return false
     }
 
-    private fun addToHistory(dbRepository: DBRepository, number: String, isBlocked: Boolean, pattern: Int) {
+    private fun addToHistory(dbRepository: DBRepository, number: String, isBlocked: Boolean, params: Int) {
         dbRepository.add(HistoryData(
             number = number,
             block = isBlocked,
-            pattern = pattern
+            params = params
         ))
     }
 

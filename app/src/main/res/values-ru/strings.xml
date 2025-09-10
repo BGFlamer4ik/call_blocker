@@ -10,7 +10,6 @@
     <string name="history_is_empty">История пустая</string>
     <string name="home_screen_welcome">Добро пожаловать!</string>
     <string name="home_screen_short_hint">Для быстрого добавления номера в ЧС используйте поле снизу</string>
-    <string name="home_screen_short_hint_history">Тут будет дополнительный экран с историей</string>
     <string name="button_add_to_blacklist_desc">Добавить в черный список</string>
     <string name="black_list_title">Черный список</string>
     <string name="white_list_title">Белый список</string>
@@ -35,4 +34,6 @@
     <string name="delete_button_text">Удалить</string>
     <string name="is_empty">пуст</string>
     <string name="menu">Меню</string>
+    <string name="fast_add_number_to_blacklist_confirm_title">Вы уверены?</string>
+    <string name="fast_add_number_to_blacklist_confirm_text">"Пожалуйста, подтвердите действие: \nДобавление в черный список номера: "</string>
 </resources>

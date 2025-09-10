@@ -1,8 +1,5 @@
 package com.bgflamer4ik.app.callblocker
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -28,7 +25,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -48,8 +45,8 @@ import com.bgflamer4ik.app.callblocker.database.DataKeys
 
 @Composable
 fun HomeScreen(vm: ApplicationViewModel) {
+    val context = LocalContext.current
     var fastAdd by remember { mutableStateOf("") }
-    val history by vm.history.collectAsState()
 
     Column(
         modifier = Modifier.padding(8.dp),
@@ -110,19 +107,33 @@ fun HomeScreen(vm: ApplicationViewModel) {
                     imeAction = ImeAction.Done
                 ),
                 label = { Text(stringResource(R.string.number_fast_add))},
-                onValueChange = { fastAdd = it }
+                onValueChange = { fastAdd = numberCorrector(it).number }
             )
             IconButton(
                 modifier = Modifier
                     .size(50.dp)
+                    .border(2.dp,
+                        if (fastAdd.isNotEmpty()) MaterialTheme.colorScheme.secondary
+                            else MaterialTheme.colorScheme.secondaryContainer,
+                        RoundedCornerShape(16.dp))
                     .background(
                         MaterialTheme.colorScheme.secondaryContainer,
                         RoundedCornerShape(16.dp)
                     ),
                 enabled = fastAdd.isNotEmpty(),
                 onClick = {
-                    val number = numberCorrector(fastAdd)
-                    vm.add(number, DataKeys.blackListKey)
+                    RequestDialogHelper.showConfirmationDialog(
+                        title = context.getString(R.string.fast_add_number_to_blacklist_confirm_title),
+                        message = context.getString(R.string.fast_add_number_to_blacklist_confirm_text) + fastAdd,
+                        onConfirm = {
+                            val number = numberCorrector(fastAdd)
+                            vm.add(number, DataKeys.blackListKey)
+                            fastAdd = ""
+                        },
+                        onDiscard = {
+                            fastAdd = ""
+                        }
+                    )
                 }
             ) {
                 Icon(
@@ -140,31 +151,7 @@ fun HomeScreen(vm: ApplicationViewModel) {
                 .padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            AnimatedVisibility(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .fillMaxWidth(),
-                visible = history.isNotEmpty(),
-                enter = fadeIn(),
-                exit = fadeOut()
-            ) {
-                HistoryWindow(vm)
-            }
-            AnimatedVisibility(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .fillMaxWidth(),
-                visible = history.isEmpty(),
-                enter = fadeIn(),
-                exit = fadeOut()
-            ) {
-                Text(
-                    stringResource(R.string.home_screen_short_hint_history),
-                    maxLines = 3,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp
-                )
-            }
+            HistoryWindow(vm)
         }
     }
 }

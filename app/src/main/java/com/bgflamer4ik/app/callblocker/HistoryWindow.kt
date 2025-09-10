@@ -46,6 +46,7 @@ fun HistoryWindow(
 ) {
     val scroll = rememberScrollState()
     val history by vm.history.collectAsState()
+
     Box(
         modifier = Modifier
             .padding(6.dp)
@@ -93,6 +94,9 @@ fun HistoryWindow(
                                 modifier = Modifier
                                     .requiredSize(50.dp)
                                     .padding(8.dp)
+                                    .border(2.dp,
+                                        MaterialTheme.colorScheme.secondary,
+                                        RoundedCornerShape(16.dp))
                                     .background(
                                         MaterialTheme.colorScheme.secondaryContainer,
                                         RoundedCornerShape(16.dp)
@@ -125,7 +129,7 @@ fun HistoryWindow(
                                         .fillMaxWidth()
                                 )
                                 Text(
-                                    DBHelper.patternDecrypt(it.pattern),
+                                    DBHelper.patternDecrypt(it.params),
                                     modifier = Modifier.fillMaxWidth()
                                 )
                             }

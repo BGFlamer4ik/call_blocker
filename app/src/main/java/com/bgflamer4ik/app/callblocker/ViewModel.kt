@@ -40,8 +40,6 @@ class ApplicationViewModel(application: Application): AndroidViewModel(applicati
         db.update(old, new, listName)
     }
 
-
-
     fun update(key: String, value: Boolean) {
         val data = KeyData(
             name = key,

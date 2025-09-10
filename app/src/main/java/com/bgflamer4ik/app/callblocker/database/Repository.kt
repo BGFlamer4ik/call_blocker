@@ -91,7 +91,7 @@ class DBRepository(context: Context) {
                 HistoryData(
                     number = cursor.getString(cursor.getColumnIndexOrThrow("number")),
                     block = cursor.getInt(cursor.getColumnIndexOrThrow("block")) == 1,
-                    pattern = cursor.getInt(cursor.getColumnIndexOrThrow("pattern"))
+                    params = cursor.getInt(cursor.getColumnIndexOrThrow("params"))
                 )
             )
         }
@@ -120,7 +120,7 @@ class DBRepository(context: Context) {
         val values = ContentValues().apply {
             put("number", entry.number)
             put("block",  if (entry.block) 1 else 0 )
-            put("pattern", entry.pattern)
+            put("params", entry.params)
         }
         db.insert("history", null, values)
         db.close()

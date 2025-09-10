@@ -16,7 +16,7 @@ data class KeyData(
 data class HistoryData(
     val number: String,
     val block: Boolean,
-    val pattern: Int
+    val params: Int
 )
 
 object DataKeys {
