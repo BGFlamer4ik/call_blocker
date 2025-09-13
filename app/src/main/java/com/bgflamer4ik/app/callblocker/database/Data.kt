@@ -1,5 +1,8 @@
 package com.bgflamer4ik.app.callblocker.database
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class NumberData(
     val number: String,
     val hasPattern: Boolean = false
@@ -8,6 +11,12 @@ data class NumberData(
         return if (!hasPattern) number else null
     }
 }
+
+@Serializable
+data class DataContainer(
+    val blacklist: List<NumberData>,
+    val whitelist: List<NumberData>
+)
 
 data class KeyData(
     val name: String,

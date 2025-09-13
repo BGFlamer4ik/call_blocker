@@ -45,10 +45,10 @@ class Main : ComponentActivity() {
 
         DBHelper.updateKeys(this)
         val isFirstLaunch = DBRepository(this).getKeySync(DataKeys.firstLaunch)
-        if (isFirstLaunch == null || isFirstLaunch != "false") {
+        if (isFirstLaunch != "false") {
             val intent = Intent(this, NotificationService::class.java)
             startForegroundService(intent)
-            DBRepository(this).add(KeyData(DataKeys.firstLaunch, "false"))
+            DBRepository(this).update(KeyData(DataKeys.firstLaunch, "false"))
         }
 
         enableEdgeToEdge()

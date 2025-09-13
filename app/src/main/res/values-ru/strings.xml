@@ -36,4 +36,13 @@
     <string name="menu">Меню</string>
     <string name="fast_add_number_to_blacklist_confirm_title">Вы уверены?</string>
     <string name="fast_add_number_to_blacklist_confirm_text">"Пожалуйста, подтвердите действие: \nДобавление в черный список номера: "</string>
+    <string name="share">Поделиться</string>
+    <string name="settings_import">Импорт</string>
+    <string name="settings_export">Экспорт</string>
+    <string name="settings_notify_export_start">Экспорт начат</string>
+    <string name="settings_notify_export_failed">Ошибка экспорта</string>
+    <string name="settings_notify_export_success">Экспорт успешен</string>
+    <string name="settings_warning_external_links">Внешние ссылки!</string>
+    <string name="settings_warning_external_link_text">Вы покидаете приложение для перехода по внешней ссылке, принять?</string>
+    <string name="check_github_for_updates">Проверить обновления на GitHub</string>
 </resources>

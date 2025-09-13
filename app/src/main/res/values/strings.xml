@@ -45,4 +45,13 @@
 
     <string name="fast_add_number_to_blacklist_confirm_title">Are you sure?</string>
     <string name="fast_add_number_to_blacklist_confirm_text">Please, confirm action: \nAdding to black list number:</string>
+    <string name="share">Share</string>
+    <string name="settings_import">Import</string>
+    <string name="settings_export">Export</string>
+    <string name="settings_notify_export_start">Export started</string>
+    <string name="settings_notify_export_failed">Export failed</string>
+    <string name="settings_notify_export_success">Export success</string>
+    <string name="settings_warning_external_links">External link!</string>
+    <string name="settings_warning_external_link_text">You\'re living app and go to external link, confirm?</string>
+    <string name="check_github_for_updates">Check GitHub for new releases</string>
 </resources>

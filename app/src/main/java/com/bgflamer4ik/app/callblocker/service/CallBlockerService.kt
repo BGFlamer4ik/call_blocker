@@ -39,6 +39,7 @@ class CallBlockerService : CallScreeningService() {
 
         val intent = Intent(this, NotificationService::class.java)
             .putExtra("text", text)
+            .putExtra("key", NotificationKeys.BLOCK_KEY)
         startForegroundService(intent)
     }
 }
