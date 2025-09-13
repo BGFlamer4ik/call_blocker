@@ -1,6 +1,6 @@
 Call Blocker app.
 
-Current version: 1.0.2b (beta)
+Current version: 1.0.3b (beta)
 Required version: Android 29+ (Tiramisu)
 
 That is simple call blocking app.
