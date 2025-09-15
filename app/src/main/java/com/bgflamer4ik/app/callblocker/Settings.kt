@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.requiredWidthIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
@@ -52,8 +53,6 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun Settings(vm: ApplicationViewModel) {
-    val scrollState = rememberScrollState()
-
     val blockUndefined by vm.blockUndefined.collectAsState("false")
     val blockAll by vm.blockAll.collectAsState("false")
     val skipCallLog by vm.skipCallLog.collectAsState("false")
@@ -63,31 +62,36 @@ fun Settings(vm: ApplicationViewModel) {
         modifier = Modifier
             .fillMaxSize()
             .padding(8.dp)
-            .horizontalScroll(scrollState)
+            .verticalScroll(rememberScrollState())
     ) {
-        SettingsBlock(
-            stringResource(R.string.settings_param_block_undefined),
-            blockUndefined == "true"
+        Column(
+            modifier = Modifier
+                .horizontalScroll(rememberScrollState()),
         ) {
-            vm.update(DataKeys.dataBlockUndefined, it)
-        }
-        SettingsBlock(
-            stringResource(R.string.settings_param_block_all_calls),
-            blockAll == "true"
-        ) {
-            vm.update(DataKeys.dataBlockAll, it)
-        }
-        SettingsBlock(
-            stringResource(R.string.settings_param_skip_call_log),
-            skipCallLog == "true"
-        ) {
-            vm.update(DataKeys.dataSkipCallLog, it)
-        }
-        SettingsBlock(
-            stringResource(R.string.settings_param_skip_notification),
-            skipNotification == "true"
-        ) {
-            vm.update(DataKeys.dataSkipNotification, it)
+            SettingsBlock(
+                stringResource(R.string.settings_param_block_undefined),
+                blockUndefined == "true"
+            ) {
+                vm.update(DataKeys.dataBlockUndefined, it)
+            }
+            SettingsBlock(
+                stringResource(R.string.settings_param_block_all_calls),
+                blockAll == "true"
+            ) {
+                vm.update(DataKeys.dataBlockAll, it)
+            }
+            SettingsBlock(
+                stringResource(R.string.settings_param_skip_call_log),
+                skipCallLog == "true"
+            ) {
+                vm.update(DataKeys.dataSkipCallLog, it)
+            }
+            SettingsBlock(
+                stringResource(R.string.settings_param_skip_notification),
+                skipNotification == "true"
+            ) {
+                vm.update(DataKeys.dataSkipNotification, it)
+            }
         }
         SpecialLinks()
     }
@@ -122,7 +126,9 @@ private fun SpecialLinks() {
                     .padding(8.dp)
                     .weight(1f),
                 onClick = {
-                    notify(context, context.getString(R.string.settings_notify_export_start), NotificationKeys.PROGRESS)
+                    notify(context,
+                        context.getString(R.string.settings_notify_export_start),
+                        NotificationKeys.PROGRESS)
                     scope.launch {
                         SettingsHelper.exportNumbersList(context, listOf(
                             DataKeys.blackListKey,
@@ -130,7 +136,9 @@ private fun SpecialLinks() {
                         )).onSuccess {
                             notify(context, it)
                         }.onFailure {
-                            notify(context, context.getString(R.string.settings_notify_export_failed), NotificationKeys.EMPTY_KEY)
+                            notify(context,
+                                context.getString(R.string.settings_notify_export_failed),
+                                NotificationKeys.EMPTY_KEY)
                         }
                     }
                 }

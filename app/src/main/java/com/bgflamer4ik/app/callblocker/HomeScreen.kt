@@ -2,6 +2,7 @@ package com.bgflamer4ik.app.callblocker
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,7 +14,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.layout.requiredWidthIn
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -49,7 +52,9 @@ fun HomeScreen(vm: ApplicationViewModel) {
     var fastAdd by remember { mutableStateOf("") }
 
     Column(
-        modifier = Modifier.padding(8.dp),
+        modifier = Modifier
+            .padding(8.dp)
+            .horizontalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
@@ -90,14 +95,15 @@ fun HomeScreen(vm: ApplicationViewModel) {
         Row(
             modifier = Modifier
                 .padding(8.dp)
+                .requiredWidthIn(min = 120.dp)
                 .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround,
+            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             OutlinedTextField(
                 modifier = Modifier
                     .defaultMinSize(minWidth = 100.dp)
-                    .requiredWidth(300.dp),
+                    .requiredWidth(320.dp),
                 value = fastAdd,
                 maxLines = 1,
                 keyboardOptions = KeyboardOptions(
