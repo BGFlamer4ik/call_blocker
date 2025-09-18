@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -60,6 +61,14 @@ fun HintView(onDismissRequest: () -> Unit) {
                 Text(stringResource(R.string.help_5), fontSize = 18.sp)
                 HorizontalDivider(Modifier.padding(8.dp))
                 Text(stringResource(R.string.help_6), fontSize = 18.sp)
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    onClick = { onDismissRequest }
+                ) {
+                    Text(stringResource(R.string.confirm_dialog_accept_button))
+                }
             }
         }
     }

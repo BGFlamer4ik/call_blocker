@@ -106,7 +106,11 @@ fun DrawerMenu(
                         fontSize = 20.sp
                     )
                 },
-                icon = { Icon(Icons.Default.AccountBox, contentDescription = stringResource(R.string.lists_screen))},
+                icon = {
+                    Icon(Icons.Default.AccountBox,
+                        contentDescription = stringResource(R.string.lists_screen)
+                    )
+                },
                 selected = false,
                 onClick = {
                     navController.navigate("lists")

@@ -32,7 +32,7 @@ android {
                 "proguard-rules.pro"
             )
         }
-        getByName("debug") {
+        debug {
             signingConfig = signingConfigs.getByName("debug")
         }
     }

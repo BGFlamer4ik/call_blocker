@@ -55,7 +55,7 @@ fun HomeScreen(vm: ApplicationViewModel) {
     Column(
         modifier = Modifier
             .padding(8.dp)
-            .fillMaxWidth(),
+            .requiredWidthIn(max = LocalWindowInfo.current.containerDpSize.width),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(

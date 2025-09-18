@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.layout.requiredWidthIn
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -38,6 +39,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -52,11 +54,10 @@ fun ListWindow(
     onEdit: (NumberData, NumberData) -> Unit,
     onDelete: (NumberData) -> Unit
 ) {
-    val scroll = rememberScrollState()
     Box(
         modifier = Modifier
             .padding(6.dp)
-            .fillMaxWidth()
+            .requiredWidthIn(max = LocalWindowInfo.current.containerDpSize.width)
             .background(MaterialTheme.colorScheme.background)
             .clip(RoundedCornerShape(8.dp))
             .border(2.dp, MaterialTheme.colorScheme.secondaryContainer, RoundedCornerShape(16.dp))
@@ -65,7 +66,7 @@ fun ListWindow(
             modifier = Modifier
                 .padding(8.dp)
                 .fillMaxWidth()
-                .horizontalScroll(scroll),
+                .horizontalScroll(rememberScrollState()),
             visible = list.isNotEmpty(),
             enter = fadeIn(),
             exit = fadeOut()
