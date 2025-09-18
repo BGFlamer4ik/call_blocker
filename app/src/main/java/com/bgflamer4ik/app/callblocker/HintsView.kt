@@ -5,9 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
@@ -17,7 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 
 @Composable
@@ -46,14 +46,20 @@ fun HintView(onDismissRequest: () -> Unit) {
                     .fillMaxWidth(),
                 verticalArrangement = Arrangement.Top
             ) {
-                Text(stringResource(R.string.help_1))
-                Spacer(Modifier.height(4.dp))
-                Text(stringResource(R.string.help_2))
-                Text(stringResource(R.string.help_3))
-                Text(stringResource(R.string.help_4))
-                Text(stringResource(R.string.help_5))
+                Text(
+                    modifier = Modifier.padding(8.dp),
+                    text = stringResource(R.string.help_1),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp
+                )
                 HorizontalDivider(Modifier.padding(8.dp))
-                Text(stringResource(R.string.help_6))
+                Text(stringResource(R.string.help_2), fontSize = 18.sp)
+                Text(stringResource(R.string.help_3), fontSize = 18.sp)
+                Text(stringResource(R.string.help_4), fontSize = 18.sp)
+                Text(stringResource(R.string.help_5), fontSize = 18.sp)
+                HorizontalDivider(Modifier.padding(8.dp))
+                Text(stringResource(R.string.help_6), fontSize = 18.sp)
             }
         }
     }

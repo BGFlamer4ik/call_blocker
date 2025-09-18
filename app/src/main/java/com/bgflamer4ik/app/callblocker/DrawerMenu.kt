@@ -1,10 +1,19 @@
 package com.bgflamer4ik.app.callblocker
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
@@ -21,10 +30,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.graphics.drawable.toBitmap
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 
@@ -34,6 +47,7 @@ fun DrawerMenu(
     drawerState: DrawerState
 ) {
     val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     ModalDrawerSheet {
         Column (
@@ -42,27 +56,33 @@ fun DrawerMenu(
                 .fillMaxHeight()
                 .verticalScroll(rememberScrollState())
         ) {
-           /* Box(
+           Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(180.dp)
-                    .padding(1.dp)
-                    .background(color = Color.Transparent)
-                    .border(2.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(16.dp))
+                    .wrapContentWidth()
+                    .heightIn(max = 200.dp)
+                    .padding(5.dp)
+                    .border(
+                        2.dp,
+                        MaterialTheme.colorScheme.primary,
+                        RoundedCornerShape(16.dp)
+                    )
                     .clip(RoundedCornerShape(16.dp))
             ) {
                 Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth()) {
-                    ContextCompat.getDrawable(context, R.drawable.logo)?.toBitmap()?.asImageBitmap()
-                        ?.let { Image(it, "") }
-                    Text(
-                        modifier = Modifier.padding(16.dp),
-                        text = stringResource(R.string.app_name),
-                        fontWeight = FontWeight.Bold
-                    )
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                ) {
+                    context.getDrawable(R.drawable.logo)?.toBitmap()?.asImageBitmap()
+                        ?.let {
+                            Image(
+                                it,
+                                stringResource(R.string.app_name)
+                            )
+                        }
                 }
-            } */
+            }
             NavigationDrawerItem(
                 label = { Text(
                     stringResource(R.string.home_screen),
