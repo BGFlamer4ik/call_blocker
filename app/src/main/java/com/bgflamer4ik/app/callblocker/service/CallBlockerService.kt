@@ -21,8 +21,8 @@ class CallBlockerService : CallScreeningService() {
             response = CallResponse.Builder()
                 .setDisallowCall(isBlocked)
                 .setRejectCall(isBlocked)
-                .setSkipCallLog(dbRepo.getKeySync(DataKeys.dataSkipCallLog) == "true")
-                .setSkipNotification(dbRepo.getKeySync(DataKeys.dataSkipNotification) == "true")
+                .setSkipCallLog(dbRepo.getKeySync(DataKeys.DATA_SKIP_CALL_LOG) == "true")
+                .setSkipNotification(dbRepo.getKeySync(DataKeys.DATA_SKIP_NOTIFICATION) == "true")
                 .build()
 
             notify(number, isBlocked)

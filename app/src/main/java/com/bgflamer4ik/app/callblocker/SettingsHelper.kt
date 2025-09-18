@@ -48,11 +48,11 @@ object SettingsHelper {
 
             try {
                 val data = DataContainer(
-                    blacklist = if (lists.contains(DataKeys.blackListKey))
-                        db.getNumbersSync(DataKeys.blackListKey)
+                    blacklist = if (lists.contains(DataKeys.BLACK_LIST_KEY))
+                        db.getNumbersSync(DataKeys.BLACK_LIST_KEY)
                         else listOf(),
-                    whitelist = if (lists.contains(DataKeys.whitelistKey))
-                        db.getNumbersSync(DataKeys.whitelistKey)
+                    whitelist = if (lists.contains(DataKeys.WHITE_LIST_KEY))
+                        db.getNumbersSync(DataKeys.WHITE_LIST_KEY)
                         else listOf()
                 )
 
@@ -97,16 +97,16 @@ object SettingsHelper {
                         if (lists == null) {
                             Log.e("Import", "Not completed parsing ")
                         } else {
-                            val black = db.getNumbersSync(DataKeys.blackListKey)
-                            val white = db.getNumbersSync(DataKeys.whitelistKey)
+                            val black = db.getNumbersSync(DataKeys.BLACK_LIST_KEY)
+                            val white = db.getNumbersSync(DataKeys.WHITE_LIST_KEY)
 
                             lists.blacklist.forEach {
                                 if (!black.contains(it))
-                                    db.add(it, DataKeys.blackListKey)
+                                    db.add(it, DataKeys.BLACK_LIST_KEY)
                             }
                             lists.whitelist.forEach {
                                 if (!white.contains(it))
-                                    db.add(it, DataKeys.whitelistKey)
+                                    db.add(it, DataKeys.WHITE_LIST_KEY)
                             }
                         }
                     }

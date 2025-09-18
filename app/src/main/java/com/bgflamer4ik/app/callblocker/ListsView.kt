@@ -94,7 +94,7 @@ fun ListsView(vm: ApplicationViewModel) {
             enabled = numberToAdd.isNotEmpty(),
             onClick = {
                 val number = numberCorrector(numberToAdd)
-                val listName = if (isWhiteSelected) DataKeys.whitelistKey else DataKeys.blackListKey
+                val listName = if (isWhiteSelected) DataKeys.WHITE_LIST_KEY else DataKeys.BLACK_LIST_KEY
                 vm.add(number, listName)
                 numberToAdd = ""
                 }
@@ -115,10 +115,10 @@ fun ListsView(vm: ApplicationViewModel) {
                 title = stringResource(R.string.black_list_title),
                 list = blacklist,
                 onEdit = { old, new ->
-                    vm.update(old, new, DataKeys.blackListKey)
+                    vm.update(old, new, DataKeys.BLACK_LIST_KEY)
                     notify.show()
                     },
-                onDelete = { vm.remove(it, DataKeys.blackListKey) }
+                onDelete = { vm.remove(it, DataKeys.BLACK_LIST_KEY) }
             )
         }
         AnimatedVisibility(
@@ -131,10 +131,10 @@ fun ListsView(vm: ApplicationViewModel) {
                 title = stringResource(R.string.white_list_title),
                 list = whitelist,
                 onEdit = { old, new ->
-                        vm.update(old, new, DataKeys.whitelistKey)
+                        vm.update(old, new, DataKeys.WHITE_LIST_KEY)
                         notify.show()
                     },
-                onDelete = { vm.remove(it, DataKeys.whitelistKey) }
+                onDelete = { vm.remove(it, DataKeys.WHITE_LIST_KEY) }
             )
         }
     }

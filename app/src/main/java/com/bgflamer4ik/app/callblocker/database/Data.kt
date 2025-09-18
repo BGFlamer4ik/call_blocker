@@ -29,11 +29,11 @@ data class HistoryData(
 )
 
 object DataKeys {
-    const val dataBlockUndefined = "block_undefined"
-    const val dataBlockAll = "block_all"
-    const val dataSkipCallLog = "skip_call_log"
-    const val dataSkipNotification = "skip_notification"
-    const val blackListKey = "blacklist"
-    const val whitelistKey = "whitelist"
-    const val firstLaunch = "first_launch"
+    const val DATA_BLOCK_UNDEFINED = "block_undefined"
+    const val DATA_BLOCK_ALL = "block_all"
+    const val DATA_SKIP_CALL_LOG = "skip_call_log"
+    const val DATA_SKIP_NOTIFICATION = "skip_notification"
+    const val BLACK_LIST_KEY = "blacklist"
+    const val WHITE_LIST_KEY = "whitelist"
+    const val FIRST_LAUNCH_KEY = "first_launch"
 }

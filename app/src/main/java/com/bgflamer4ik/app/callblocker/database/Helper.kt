@@ -18,13 +18,13 @@ object DBHelper {
     fun updateKeys(context: Context) {
         val db = DBRepository(context)
         val keys = arrayOf(
-            DataKeys.dataBlockAll,
-            DataKeys.dataBlockUndefined,
-            DataKeys.dataSkipNotification,
-            DataKeys.dataSkipCallLog,
+            DataKeys.DATA_BLOCK_ALL,
+            DataKeys.DATA_BLOCK_UNDEFINED,
+            DataKeys.DATA_SKIP_NOTIFICATION,
+            DataKeys.DATA_SKIP_CALL_LOG,
         )
-        if (db.getKeySync(DataKeys.firstLaunch) == null) {
-            db.add(KeyData(DataKeys.firstLaunch, "true"))
+        if (db.getKeySync(DataKeys.FIRST_LAUNCH_KEY) == null) {
+            db.add(KeyData(DataKeys.FIRST_LAUNCH_KEY, "true"))
         }
         keys.forEach {
             if (db.getKeySync(it) == null) {

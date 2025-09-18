@@ -36,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -54,7 +55,7 @@ fun HomeScreen(vm: ApplicationViewModel) {
     Column(
         modifier = Modifier
             .padding(8.dp)
-            .horizontalScroll(rememberScrollState()),
+            .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
@@ -95,14 +96,17 @@ fun HomeScreen(vm: ApplicationViewModel) {
         Row(
             modifier = Modifier
                 .padding(8.dp)
-                .requiredWidthIn(min = 120.dp)
-                .fillMaxWidth(),
+                .requiredWidthIn(
+                    min = 120.dp,
+                    max = LocalWindowInfo.current.containerSize.width.dp
+                )
+                .horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             OutlinedTextField(
                 modifier = Modifier
-                    .defaultMinSize(minWidth = 100.dp)
+                    .defaultMinSize(minWidth = 75.dp)
                     .requiredWidth(320.dp),
                 value = fastAdd,
                 maxLines = 1,
@@ -133,7 +137,7 @@ fun HomeScreen(vm: ApplicationViewModel) {
                         message = context.getString(R.string.fast_add_number_to_blacklist_confirm_text) + fastAdd,
                         onConfirm = {
                             val number = numberCorrector(fastAdd)
-                            vm.add(number, DataKeys.blackListKey)
+                            vm.add(number, DataKeys.BLACK_LIST_KEY)
                             fastAdd = ""
                         },
                         onDiscard = {

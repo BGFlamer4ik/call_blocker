@@ -120,7 +120,6 @@ fun HistoryWindow(
                                     .padding(8.dp)
                                     .fillParentMaxWidth()
                             ) {
-
                                 Text(
                                     if (it.block) stringResource(R.string.history_number_blocked)
                                     else stringResource(R.string.history_number_passed),

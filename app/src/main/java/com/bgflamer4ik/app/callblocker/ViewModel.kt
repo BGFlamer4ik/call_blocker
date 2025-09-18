@@ -21,10 +21,10 @@ class ApplicationViewModel(application: Application): AndroidViewModel(applicati
     val whitelist = _whitelist.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
     val history = _history.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-    private val _blockUndefined = db.getKey(DataKeys.dataBlockUndefined)
-    private val _blockAll = db.getKey(DataKeys.dataBlockAll)
-    private val _skipCallLog = db.getKey(DataKeys.dataSkipCallLog)
-    private val _skipNotification = db.getKey(DataKeys.dataSkipNotification)
+    private val _blockUndefined = db.getKey(DataKeys.DATA_BLOCK_UNDEFINED)
+    private val _blockAll = db.getKey(DataKeys.DATA_BLOCK_ALL)
+    private val _skipCallLog = db.getKey(DataKeys.DATA_SKIP_CALL_LOG)
+    private val _skipNotification = db.getKey(DataKeys.DATA_SKIP_NOTIFICATION)
 
     val blockUndefined = _blockUndefined.stateIn(viewModelScope,
         SharingStarted.WhileSubscribed(5000), "false")

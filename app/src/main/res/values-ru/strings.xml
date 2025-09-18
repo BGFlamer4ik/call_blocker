@@ -45,4 +45,11 @@
     <string name="settings_warning_external_links">Внешние ссылки!</string>
     <string name="settings_warning_external_link_text">Вы покидаете приложение для перехода по внешней ссылке, принять?</string>
     <string name="check_github_for_updates">Проверить обновления на GitHub</string>
+    <string name="hint_dialog_button">Показать подсказку</string>
+    <string name="help_1">Ввод номера поддерживает маски:</string>
+    <string name="help_2"> (*) &#8211; любое количество символов (без скобок)</string>
+    <string name="help_3"> (?) &#8211; любая цифра (без скобок)</string>
+    <string name="help_4"> [0&#8211;9] &#8211; одна цифра в диапазоне </string>
+    <string name="help_5"> [^5] &#8211; не 5</string>
+    <string name="help_6"> Пример: +7990[0&#8211;2]?[^5]*</string>
 </resources>

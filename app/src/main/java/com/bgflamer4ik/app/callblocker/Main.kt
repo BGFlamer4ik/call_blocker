@@ -7,10 +7,13 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -22,10 +25,15 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -44,11 +52,13 @@ class Main : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         DBHelper.updateKeys(this)
-        val isFirstLaunch = DBRepository(this).getKeySync(DataKeys.firstLaunch)
+        val isFirstLaunch = DBRepository(this).getKeySync(DataKeys.FIRST_LAUNCH_KEY)
         if (isFirstLaunch != "false") {
             val intent = Intent(this, NotificationService::class.java)
             startForegroundService(intent)
-            DBRepository(this).update(KeyData(DataKeys.firstLaunch, "false"))
+            DBRepository(this).update(KeyData(DataKeys.FIRST_LAUNCH_KEY, "false"))
+
+
         }
 
         enableEdgeToEdge()
@@ -72,6 +82,11 @@ fun MainScreen() {
     val vm: ApplicationViewModel = viewModel()
     val navController = rememberNavController()
 
+    var showHint by remember { mutableStateOf(false) }
+
+    if (showHint) {
+        HintView { showHint = !showHint }
+    }
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -107,6 +122,24 @@ fun MainScreen() {
                     ),
                 )
             },
+            floatingActionButton = {
+                FloatingActionButton(
+                    modifier = Modifier
+                        .sizeIn(
+                            maxWidth = 50.dp,
+                            maxHeight = 50.dp
+                        ),
+                    onClick = { showHint = !showHint }
+                ) {
+                    Icon(
+                        Icons.Default.Info,
+                        contentDescription = stringResource(R.string.hint_dialog_button),
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .fillMaxSize()
+                    )
+                }
+            }
         ) {
             NavHost(
                 navController = navController,

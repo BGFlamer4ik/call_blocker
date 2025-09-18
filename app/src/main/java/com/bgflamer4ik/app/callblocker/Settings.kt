@@ -72,25 +72,25 @@ fun Settings(vm: ApplicationViewModel) {
                 stringResource(R.string.settings_param_block_undefined),
                 blockUndefined == "true"
             ) {
-                vm.update(DataKeys.dataBlockUndefined, it)
+                vm.update(DataKeys.DATA_BLOCK_UNDEFINED, it)
             }
             SettingsBlock(
                 stringResource(R.string.settings_param_block_all_calls),
                 blockAll == "true"
             ) {
-                vm.update(DataKeys.dataBlockAll, it)
+                vm.update(DataKeys.DATA_BLOCK_ALL, it)
             }
             SettingsBlock(
                 stringResource(R.string.settings_param_skip_call_log),
                 skipCallLog == "true"
             ) {
-                vm.update(DataKeys.dataSkipCallLog, it)
+                vm.update(DataKeys.DATA_SKIP_CALL_LOG, it)
             }
             SettingsBlock(
                 stringResource(R.string.settings_param_skip_notification),
                 skipNotification == "true"
             ) {
-                vm.update(DataKeys.dataSkipNotification, it)
+                vm.update(DataKeys.DATA_SKIP_NOTIFICATION, it)
             }
         }
         SpecialLinks()
@@ -131,8 +131,8 @@ private fun SpecialLinks() {
                         NotificationKeys.PROGRESS)
                     scope.launch {
                         SettingsHelper.exportNumbersList(context, listOf(
-                            DataKeys.blackListKey,
-                            DataKeys.whitelistKey
+                            DataKeys.BLACK_LIST_KEY,
+                            DataKeys.WHITE_LIST_KEY
                         )).onSuccess {
                             notify(context, it)
                         }.onFailure {

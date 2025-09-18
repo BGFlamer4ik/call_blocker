@@ -14,13 +14,13 @@ object CallBlockerMatchHelper {
         val db = DBRepository(context)
 
         if (number.isNullOrEmpty()) {
-            val isNeeded = db.getKeySync(DataKeys.dataBlockUndefined) == "true"
+            val isNeeded = db.getKeySync(DataKeys.DATA_BLOCK_UNDEFINED) == "true"
             addToHistory(db,"$number", isNeeded, 10)
             return isNeeded
         }
 
-        val black = db.getNumbersSync(DataKeys.blackListKey)
-        val white = db.getNumbersSync(DataKeys.whitelistKey)
+        val black = db.getNumbersSync(DataKeys.BLACK_LIST_KEY)
+        val white = db.getNumbersSync(DataKeys.WHITE_LIST_KEY)
 
         if (black.map { it.toNumber() }.contains(number)) {
             addToHistory(db,number, true, 1)
@@ -39,7 +39,7 @@ object CallBlockerMatchHelper {
             addToHistory(db, number, false, 4)
             return false
         }
-        if (db.getKeySync(DataKeys.dataBlockAll) == "true") {
+        if (db.getKeySync(DataKeys.DATA_BLOCK_ALL) == "true") {
             addToHistory(db, number, true, 5)
             return true
         }
