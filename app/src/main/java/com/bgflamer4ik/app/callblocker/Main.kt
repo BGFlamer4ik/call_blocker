@@ -57,8 +57,6 @@ class Main : ComponentActivity() {
             val intent = Intent(this, NotificationService::class.java)
             startForegroundService(intent)
             DBRepository(this).update(KeyData(DataKeys.FIRST_LAUNCH_KEY, "false"))
-
-
         }
 
         enableEdgeToEdge()
