@@ -17,6 +17,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -54,53 +55,85 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun Settings(vm: ApplicationViewModel) {
+    BoxWithConstraints(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        val windowInfo = LocalWindowInfo.current
+        if (this.maxWidth > this.maxHeight) {
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Switches(
+                    vm,
+                    Modifier
+                        .weight(1f)
+                        .padding(8.dp)
+                        .verticalScroll(rememberScrollState())
+                )
+                SpecialLinks(Modifier
+                    .padding(8.dp)
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState())
+                )
+            }
+        } else {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(8.dp)
+            ) {
+                Switches(vm, Modifier.horizontalScroll(rememberScrollState()))
+                SpecialLinks(Modifier
+                    .padding(8.dp)
+                    .wrapContentHeight()
+                    .verticalScroll(rememberScrollState())
+                    .requiredWidth(windowInfo.containerDpSize.width)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun Switches(vm: ApplicationViewModel, modifier: Modifier) {
     val blockUndefined by vm.blockUndefined.collectAsState("false")
     val blockAll by vm.blockAll.collectAsState("false")
     val skipCallLog by vm.skipCallLog.collectAsState("false")
     val skipNotification by vm.skipNotification.collectAsState("false")
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .requiredWidthIn(max = LocalWindowInfo.current.containerDpSize.width)
-            .padding(8.dp)
-            .verticalScroll(rememberScrollState())
-    ) {
-        Column(
-            modifier = Modifier
-                .horizontalScroll(rememberScrollState()),
+    Column(modifier = modifier) {
+        SettingsBlock(
+            stringResource(R.string.settings_param_block_undefined),
+            blockUndefined == "true"
         ) {
-            SettingsBlock(
-                stringResource(R.string.settings_param_block_undefined),
-                blockUndefined == "true"
-            ) {
-                vm.update(DataKeys.DATA_BLOCK_UNDEFINED, it)
-            }
-            SettingsBlock(
-                stringResource(R.string.settings_param_block_all_calls),
-                blockAll == "true"
-            ) {
-                vm.update(DataKeys.DATA_BLOCK_ALL, it)
-            }
-            SettingsBlock(
-                stringResource(R.string.settings_param_skip_call_log),
-                skipCallLog == "true"
-            ) {
-                vm.update(DataKeys.DATA_SKIP_CALL_LOG, it)
-            }
-            SettingsBlock(
-                stringResource(R.string.settings_param_skip_notification),
-                skipNotification == "true"
-            ) {
-                vm.update(DataKeys.DATA_SKIP_NOTIFICATION, it)
-            }
+            vm.update(DataKeys.DATA_BLOCK_UNDEFINED, it)
         }
-        SpecialLinks()
+        SettingsBlock(
+            stringResource(R.string.settings_param_block_all_calls),
+            blockAll == "true"
+        ) {
+            vm.update(DataKeys.DATA_BLOCK_ALL, it)
+        }
+        SettingsBlock(
+            stringResource(R.string.settings_param_skip_call_log),
+            skipCallLog == "true"
+        ) {
+            vm.update(DataKeys.DATA_SKIP_CALL_LOG, it)
+        }
+        SettingsBlock(
+            stringResource(R.string.settings_param_skip_notification),
+            skipNotification == "true"
+        ) {
+            vm.update(DataKeys.DATA_SKIP_NOTIFICATION, it)
+        }
     }
 }
 
 @Composable
-private fun SpecialLinks() {
+private fun SpecialLinks(modifier: Modifier) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
@@ -113,10 +146,7 @@ private fun SpecialLinks() {
     }
 
     Column(
-        modifier = Modifier
-            .padding(8.dp)
-            .wrapContentHeight()
-            .requiredWidth(380.dp),
+        modifier = modifier,
     ) {
         Row(
             modifier = Modifier
@@ -160,7 +190,7 @@ private fun SpecialLinks() {
         }
         Button(
             modifier = Modifier
-                .padding(8.dp)
+                .padding(16.dp)
                 .fillMaxWidth(),
             onClick = {
                 RequestDialogHelper.showConfirmationDialog(
