@@ -7,6 +7,7 @@ core = "3.5.3"
 gson = "2.13.2"
 guava = "33.5.0-jre"
 uiTestJunit4 = "1.10.0-alpha03"
+dotenvKotlin = "6.5.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version = "1.17.0" }
@@ -28,6 +29,7 @@ core = { group = "com.google.zxing", name = "core", version.ref = "core" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4", version.ref = "uiTestJunit4" }
+dotenv-kotlin = { group = "io.github.cdimascio", name = "dotenv-kotlin", version.ref = "dotenvKotlin" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

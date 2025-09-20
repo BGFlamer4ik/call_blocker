@@ -51,6 +51,7 @@ import androidx.core.net.toUri
 import com.bgflamer4ik.app.callblocker.database.DataKeys
 import com.bgflamer4ik.app.callblocker.service.NotificationKeys
 import com.bgflamer4ik.app.callblocker.service.NotificationService
+import io.github.cdimascio.dotenv.dotenv
 import kotlinx.coroutines.launch
 
 @Composable
@@ -137,6 +138,11 @@ private fun SpecialLinks(modifier: Modifier) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
+    val dotenv = dotenv {
+        directory = "/assets"
+        filename = "env"
+    }
+
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) {
         if (it != null) {
             scope.launch {
@@ -199,7 +205,7 @@ private fun SpecialLinks(modifier: Modifier) {
                     onConfirm = {
                         val intent = Intent(
                             Intent.ACTION_VIEW,
-                            "https://github.com/BGFlamer4ik/call_blocker/releases".toUri()
+                            dotenv["GIT_LINK"].toUri()
                         )
                         context.startActivity(intent)
                     },

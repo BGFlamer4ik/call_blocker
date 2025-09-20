@@ -68,6 +68,7 @@ dependencies {
     implementation(libs.guava)
     implementation(libs.ui.test.junit4)
     implementation(libs.androidx.espresso.core)
+    implementation(libs.dotenv.kotlin)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.ui.test.junit4)
