@@ -20,6 +20,8 @@ Translations: EN, RU
 TODO:
 Next version:
 - Add contact sync for identity undefined call
+
+License: Apache 2.0
 - Add history sync for automatical block
 - Add clockworking tools
 Latest futures:
