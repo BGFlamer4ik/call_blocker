@@ -5,12 +5,16 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -31,8 +35,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
@@ -45,6 +52,7 @@ import com.bgflamer4ik.app.callblocker.database.DataKeys
 import com.bgflamer4ik.app.callblocker.database.KeyData
 import com.bgflamer4ik.app.callblocker.service.NotificationService
 import com.bgflamer4ik.app.callblocker.ui.theme.MainTheme
+import io.github.cdimascio.dotenv.dotenv
 import kotlinx.coroutines.launch
 
 class Main : ComponentActivity() {
@@ -53,16 +61,23 @@ class Main : ComponentActivity() {
 
         DBHelper.updateKeys(this)
         val isFirstLaunch = DBRepository(this).getKeySync(DataKeys.FIRST_LAUNCH_KEY)
-        if (isFirstLaunch != "false") {
-            val intent = Intent(this, NotificationService::class.java)
-            startForegroundService(intent)
-            DBRepository(this).update(KeyData(DataKeys.FIRST_LAUNCH_KEY, "false"))
-        }
 
         enableEdgeToEdge()
         setContent {
             MainTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
+                    if (isFirstLaunch != "false") {
+                        EulaConfirmationDialog(
+                            onConfirm = {
+                                val intent = Intent(this, NotificationService::class.java)
+                                startForegroundService(intent)
+                                DBRepository(this).update(KeyData(DataKeys.FIRST_LAUNCH_KEY, "false"))
+                            },
+                            onDiscard = {
+                                this.finishAffinity()
+                            }
+                        )
+                    }
                     RequestPermission(LocalContext.current)
                     RenderDialogs()
                     MainScreen()
@@ -151,4 +166,40 @@ fun MainScreen() {
             }
         }
     }
+}
+
+@Composable
+private fun EulaConfirmationDialog(
+    onConfirm: () -> Unit,
+    onDiscard: () -> Unit
+) {
+    val uriHandler = LocalUriHandler.current
+    AlertDialog(
+        onDismissRequest = onDiscard,
+        title = { Text(stringResource(R.string.eula)) },
+        text = {
+            Column {
+                Text(stringResource(R.string.first_launch_confirmation_eula_message))
+                Text(
+                    text = "GitHub...",
+                    style = TextStyle(color = Color.Blue),
+                    modifier = Modifier.clickable(
+                        onClick = {
+                            val dotenv = dotenv {
+                                directory = "/assets"
+                                filename = "env"
+                            }
+                            uriHandler.openUri(dotenv.get("GIT_LINK"))
+                        }
+                    )
+                )
+            }
+        },
+        confirmButton = {
+            Button(onClick = onConfirm) { Text(stringResource(R.string.confirm_dialog_accept_button)) }
+        },
+        dismissButton = {
+            Button(onClick = onDiscard) {Text(stringResource(R.string.confirm_dialog_decline_button))}
+        }
+    )
 }

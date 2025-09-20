@@ -48,7 +48,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import com.bgflamer4ik.app.callblocker.database.DBRepository
 import com.bgflamer4ik.app.callblocker.database.DataKeys
+import com.bgflamer4ik.app.callblocker.database.KeyData
 import com.bgflamer4ik.app.callblocker.service.NotificationKeys
 import com.bgflamer4ik.app.callblocker.service.NotificationService
 import io.github.cdimascio.dotenv.dotenv
@@ -143,6 +145,15 @@ private fun SpecialLinks(modifier: Modifier) {
         filename = "env"
     }
 
+    val callScreening = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            Log.d("Role request", "Result OK")
+        } else {
+            Log.d("Role request", "Permission not granted")
+        }
+    }
+
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) {
         if (it != null) {
             scope.launch {
@@ -214,6 +225,28 @@ private fun SpecialLinks(modifier: Modifier) {
             }
         ) {
             Text(stringResource(R.string.check_github_for_updates))
+        }
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = {
+                Toast.makeText(context, "Remove all roles from app", Toast.LENGTH_LONG).show()
+
+                val roleManager = context.getSystemService(RoleManager::class.java) as RoleManager
+                val callScreeningIntent = roleManager.createRequestRoleIntent(RoleManager.ROLE_CALL_SCREENING)
+                callScreening.launch(callScreeningIntent)
+
+                val intent = Intent(
+                    android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    Uri.fromParts("package", context.packageName, null)
+                ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                context.startActivity(intent)
+
+                DBRepository(context).update(
+                    KeyData(DataKeys.FIRST_LAUNCH_KEY, "true")
+                )
+            }
+        ) {
+            Text(stringResource(R.string.settings_eula_discard_button))
         }
     }
 }

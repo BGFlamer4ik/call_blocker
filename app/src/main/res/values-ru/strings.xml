@@ -52,4 +52,6 @@
     <string name="help_4"> [0&#8211;9] &#8211; одна цифра в диапазоне </string>
     <string name="help_5"> [^5] &#8211; не 5</string>
     <string name="help_6"> Пример: +7990[0&#8211;2]?[^5]*</string>
+    <string name="first_launch_confirmation_eula_message">При первом запуске вам нужно принять условия лицензионного соглашения</string>
+    <string name="settings_eula_discard_button">Отклонить EULA (Приложение будет закрыто)</string>
 </resources>

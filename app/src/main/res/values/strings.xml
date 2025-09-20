@@ -61,4 +61,7 @@
     <string name="help_4"> [0&#8211;9] &#8211; one number in range </string>
     <string name="help_5"> [^5] &#8211; not 5</string>
     <string name="help_6"> Example: +7990[0&#8211;2]?[^5]*</string>
+    <string name="eula" translatable="false">EULA</string>
+    <string name="first_launch_confirmation_eula_message">At first launch you must confirm license agreement</string>
+    <string name="settings_eula_discard_button">Discard EULA (Abort application)</string>
 </resources>
