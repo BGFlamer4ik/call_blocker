@@ -1,49 +1,59 @@
 package com.bgflamer4ik.app.callblocker.service
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.ContactsContract
 import android.util.Log
+import androidx.core.content.ContextCompat
 import com.bgflamer4ik.app.callblocker.database.DBRepository
 import com.bgflamer4ik.app.callblocker.database.DataKeys
 import com.bgflamer4ik.app.callblocker.database.HistoryData
+import com.bgflamer4ik.app.callblocker.database.HistoryDataParams
 import com.bgflamer4ik.app.callblocker.database.NumberData
 
 object CallBlockerMatchHelper {
-    fun shouldBlockNumber(context: Context, number: String?): Boolean {
+    fun shouldBlockNumber(context: Context, handle: Uri): Boolean {
         val db = DBRepository(context)
+        val number = getPhoneNumberHandle(context, handle)
+        val isBlockUndefined = db.getKeySync(DataKeys.DATA_BLOCK_UNDEFINED) == "true"
 
         if (number.isNullOrEmpty()) {
-            val isNeeded = db.getKeySync(DataKeys.DATA_BLOCK_UNDEFINED) == "true"
-            addToHistory(db,"$number", isNeeded, 10)
-            return isNeeded
+            addToHistory(db,"$number", isBlockUndefined, HistoryDataParams.UNDEFINED)
+            return isBlockUndefined
+        }
+
+        if (isInContacts(context, handle) == false && isBlockUndefined) {
+            addToHistory(db, number, true, HistoryDataParams.UNDEFINED)
+            return true
         }
 
         val black = db.getNumbersSync(DataKeys.BLACK_LIST_KEY)
         val white = db.getNumbersSync(DataKeys.WHITE_LIST_KEY)
 
         if (black.map { it.toNumber() }.contains(number)) {
-            addToHistory(db,number, true, 1)
+            addToHistory(db,number, true, HistoryDataParams.BLACK)
             return true
         }
         if (white.map { it.toNumber() }.contains(number)) {
-            addToHistory(db, number, false, 3)
+            addToHistory(db, number, false, HistoryDataParams.WHITE)
             return false
         }
 
         if (black.any { isMatchesNumber(number, it) }) {
-            addToHistory(db, number, true, 2)
+            addToHistory(db, number, true, HistoryDataParams.BLACK_PATTERN)
             return true
         }
         if (white.any { isMatchesNumber(number, it) }) {
-            addToHistory(db, number, false, 4)
+            addToHistory(db, number, false, HistoryDataParams.WHITE_PATTERN)
             return false
         }
         if (db.getKeySync(DataKeys.DATA_BLOCK_ALL) == "true") {
-            addToHistory(db, number, true, 5)
+            addToHistory(db, number, true, HistoryDataParams.BLOCK_ALL)
             return true
         }
-        addToHistory(db, number, false, 0)
+        addToHistory(db, number, false, HistoryDataParams.PASS)
         return false
     }
 
@@ -90,8 +100,8 @@ object CallBlockerMatchHelper {
         return Regex("^$escaped$")
     }
 
-    fun getPhoneNumberHandle(context: Context, handle: Uri?): String? {
-        return when (handle?.scheme) {
+    fun getPhoneNumberHandle(context: Context, handle: Uri): String? {
+        return when (handle.scheme) {
             "tel" -> handle.schemeSpecificPart
             "content" -> {
                 context.contentResolver.query(
@@ -107,9 +117,31 @@ object CallBlockerMatchHelper {
                 }
             }
             else -> {
-                Log.d( "CallBlockingService", "Unknown scheme: ${handle?.scheme}")
+                Log.d( "CallBlockingService", "Unknown scheme: ${handle.scheme}")
                 null
             }
         }
+    }
+
+    fun isInContacts(context: Context, handle: Uri): Boolean? {
+        if (DBRepository(context).getKeySync(DataKeys.DATA_BLOCK_UNDEFINED) == "true") {
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+                context.contentResolver.query(
+                    handle,
+                    arrayOf(
+                        ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME
+                    ),
+                    null, null, null
+                )?.use { cursor ->
+                    if (cursor.moveToFirst()) {
+                        return !cursor.getString(
+                            cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+                        ).isNullOrBlank()
+                    }
+                }
+                return false
+            } else return null
+        }
+        return null
     }
 }

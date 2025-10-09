@@ -28,6 +28,17 @@ data class HistoryData(
     val params: Int
 )
 
+object HistoryDataParams {
+    const val PASS = 0
+    const val BLACK = 1
+    const val BLACK_PATTERN = 2
+    const val WHITE = 3
+    const val WHITE_PATTERN = 4
+    const val BLOCK_ALL = 5
+    const val UNDEFINED = 6
+    const val ERROR = 10
+}
+
 object DataKeys {
     const val DATA_BLOCK_UNDEFINED = "block_undefined"
     const val DATA_BLOCK_ALL = "block_all"

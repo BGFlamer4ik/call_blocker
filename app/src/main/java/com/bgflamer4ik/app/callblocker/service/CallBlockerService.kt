@@ -1,6 +1,7 @@
 package com.bgflamer4ik.app.callblocker.service
 
 import android.content.Intent
+import android.net.Uri
 import android.telecom.Call
 import android.telecom.CallScreeningService
 import com.bgflamer4ik.app.callblocker.R
@@ -15,8 +16,7 @@ class CallBlockerService : CallScreeningService() {
     override fun onScreenCall(p0: Call.Details) {
         var response: CallResponse
         if (p0.callDirection == Call.Details.DIRECTION_INCOMING) {
-            val number = getPhoneNumberHandle(this, p0.handle) ?: p0.handle.schemeSpecificPart
-            val isBlocked = shouldBlockNumber(this, number)
+            val isBlocked = shouldBlockNumber(this, p0.handle)
 
             response = CallResponse.Builder()
                 .setDisallowCall(isBlocked)
@@ -25,14 +25,15 @@ class CallBlockerService : CallScreeningService() {
                 .setSkipNotification(dbRepo.getKeySync(DataKeys.DATA_SKIP_NOTIFICATION) == "true")
                 .build()
 
-            notify(number, isBlocked)
+            notify(p0.handle, isBlocked)
         } else {
             response = CallResponse.Builder().build()
         }
         respondToCall(p0, response)
     }
 
-    private fun notify(number: String, isBlocked: Boolean) {
+    private fun notify(handle: Uri, isBlocked: Boolean) {
+        val number = getPhoneNumberHandle(this, handle) ?: handle.schemeSpecificPart
         val text = "$number " +
                 if (isBlocked) this.getString(R.string.notification_is_blocked)
                 else this.getString(R.string.notification_passed)

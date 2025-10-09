@@ -5,12 +5,13 @@ import android.content.Context
 object DBHelper {
     fun patternDecrypt(p0: Int): String {
         return when(p0) {
-            0 -> "Number passed"
-            1 -> "Number in Black list"
-            2 -> "Number matches pattern in Blacklist"
-            3 -> "Number in White list"
-            4 -> "Number matches pattern in Whitelist"
-            5 -> "Number not passed. Block All."
+            HistoryDataParams.PASS -> "Number passed"
+            HistoryDataParams.BLACK -> "Number in Black list"
+            HistoryDataParams.BLACK_PATTERN -> "Number matches pattern in Blacklist"
+            HistoryDataParams.WHITE -> "Number in White list"
+            HistoryDataParams.WHITE_PATTERN -> "Number matches pattern in Whitelist"
+            HistoryDataParams.BLOCK_ALL -> "Number not passed. Block All."
+            HistoryDataParams.UNDEFINED -> "Number is undefined."
             else -> "Error?"
         }
     }
