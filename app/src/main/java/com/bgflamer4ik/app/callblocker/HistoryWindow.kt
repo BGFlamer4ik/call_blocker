@@ -154,7 +154,7 @@ fun HistoryWindow(
                                             )
                                         }
                                     ) {
-                                        Text("Block") //TODO: Translation
+                                        Text("Block")
                                     }
                                     Button(
                                         modifier = Modifier.fillMaxWidth(),
@@ -168,7 +168,7 @@ fun HistoryWindow(
                                             )
                                         }
                                     ) {
-                                        Text(" or not?..") //TODO: Translation
+                                        Text(" or not?..")
                                     }
                                 }
                             }
