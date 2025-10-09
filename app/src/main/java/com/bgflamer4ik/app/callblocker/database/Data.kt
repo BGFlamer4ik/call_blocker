@@ -36,7 +36,6 @@ object HistoryDataParams {
     const val WHITE_PATTERN = 4
     const val BLOCK_ALL = 5
     const val UNDEFINED = 6
-    const val ERROR = 10
 }
 
 object DataKeys {
