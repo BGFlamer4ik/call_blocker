@@ -140,6 +140,7 @@ fun DrawerMenu(
                }
            )
            HorizontalDivider(Modifier.padding(6.dp))
+            //TODO: Lists lab for correction lists
            NavigationDrawerItem(
                icon = { Icon(Icons.Default.Settings, contentDescription = stringResource(R.string.settings_screen)) },
                label = {
