@@ -33,16 +33,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bgflamer4ik.app.callblocker.database.DBHelper
-import com.bgflamer4ik.app.callblocker.database.DBRepository
 import com.bgflamer4ik.app.callblocker.database.DataKeys
-import com.bgflamer4ik.app.callblocker.database.HistoryData
 import com.bgflamer4ik.app.callblocker.database.NumberData
 
 @Composable
