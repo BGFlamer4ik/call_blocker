@@ -273,7 +273,7 @@ private fun SettingsBlock(
         ) {
             Text(
                 modifier = Modifier
-                    .fillMaxWidth(0.6f),
+                    .fillMaxWidth(0.8f),
                 text = text,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
