@@ -6,18 +6,16 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredSize
-import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -48,7 +46,6 @@ import com.bgflamer4ik.app.callblocker.database.NumberData
 fun HistoryWindow(
     vm: ApplicationViewModel
 ) {
-    val scroll = rememberScrollState()
     val history by vm.history.collectAsState()
 
     Box(
@@ -65,8 +62,7 @@ fun HistoryWindow(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(8.dp)
-                .horizontalScroll(scroll),
+                .padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AnimatedVisibility(
@@ -84,13 +80,15 @@ fun HistoryWindow(
                         Row(
                             modifier = Modifier
                                 .padding(8.dp)
-                                .fillMaxWidth()
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
                                 modifier = Modifier
                                     .clickable(
                                         onClick = { isExpanded = !isExpanded })
-                                    .requiredWidth(320.dp),
+                                    .fillMaxWidth(0.75f),
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 20.sp,
                                 text = it.number,
@@ -99,7 +97,7 @@ fun HistoryWindow(
                             )
                             IconButton(
                                 modifier = Modifier
-                                    .requiredSize(50.dp)
+                                    .requiredHeight(50.dp)
                                     .padding(8.dp)
                                     .border(2.dp,
                                         MaterialTheme.colorScheme.secondary,
