@@ -46,6 +46,7 @@ import com.bgflamer4ik.app.callblocker.database.NumberData
 fun ListWindow(
     title: String,
     list: List<NumberData>,
+    modifier: Modifier,
     onEdit: (NumberData, NumberData) -> Unit,
     onDelete: (NumberData) -> Unit
 ) {
@@ -61,9 +62,7 @@ fun ListWindow(
             )
     ) {
         AnimatedVisibility(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(8.dp),
+            modifier = modifier,
             visible = list.isNotEmpty(),
             enter = fadeIn(),
             exit = fadeOut()
@@ -161,9 +160,7 @@ fun ListWindow(
             }
         }
         AnimatedVisibility(
-            modifier = Modifier
-                .padding(8.dp)
-                .fillMaxWidth(),
+            modifier = modifier,
             visible = list.isEmpty(),
             enter = fadeIn(),
             exit = fadeOut()

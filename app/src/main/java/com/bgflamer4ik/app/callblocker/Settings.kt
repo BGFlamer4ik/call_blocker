@@ -13,7 +13,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -23,7 +22,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
-import androidx.compose.foundation.layout.requiredWidthIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -72,8 +70,9 @@ fun Settings(vm: ApplicationViewModel) {
                 )
                 SpecialLinks(Modifier
                     .padding(8.dp)
+                    .fillMaxWidth()
                     .weight(1f)
-                    .verticalScroll(rememberScrollState())
+                    //.verticalScroll(rememberScrollState())
                 )
             }
         } else {
@@ -81,15 +80,16 @@ fun Settings(vm: ApplicationViewModel) {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(8.dp)
+                    .verticalScroll(rememberScrollState())
             ) {
                 Switches(
                     vm,
-                    Modifier.horizontalScroll(rememberScrollState())
+                    Modifier
+                        .fillMaxWidth()
                 )
                 SpecialLinks(Modifier
                     .padding(8.dp)
                     .wrapContentHeight()
-                    .verticalScroll(rememberScrollState())
                     .requiredWidth(windowInfo.containerDpSize.width)
                 )
             }
@@ -195,7 +195,11 @@ private fun SpecialLinks(modifier: Modifier) {
                     }
                 }
             ) {
-                Text(stringResource(R.string.settings_export))
+                Text(
+                    text = stringResource(R.string.settings_export),
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1
+                )
             }
             Button(
                 modifier = Modifier
@@ -205,7 +209,10 @@ private fun SpecialLinks(modifier: Modifier) {
                     launcher.launch(arrayOf("application/json"))
                 }
             ) {
-                Text(stringResource(R.string.settings_import))
+                Text(text = stringResource(R.string.settings_import),
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1
+                )
             }
         }
         Button(
@@ -232,7 +239,9 @@ private fun SpecialLinks(modifier: Modifier) {
                 )
             }
         ) {
-            Text(stringResource(R.string.check_github_for_updates))
+            Text(
+                stringResource(R.string.check_github_for_updates),
+                overflow = TextOverflow.Ellipsis)
         }
     }
 }
@@ -257,7 +266,6 @@ private fun SettingsBlock(
     ) {
         Row(
             modifier = Modifier
-                .requiredWidthIn(min = 120.dp)
                 .padding(all = 8.dp)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -265,10 +273,10 @@ private fun SettingsBlock(
         ) {
             Text(
                 modifier = Modifier
-                    .requiredWidth(320.dp),
+                    .fillMaxWidth(0.6f),
                 text = text,
                 overflow = TextOverflow.Ellipsis,
-                maxLines = 3,
+                maxLines = 1,
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp
             )

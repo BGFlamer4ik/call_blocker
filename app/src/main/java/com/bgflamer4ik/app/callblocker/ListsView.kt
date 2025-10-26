@@ -136,6 +136,8 @@ private fun HorizontalView(vm: ApplicationViewModel) {
             ListWindow(
                 title = stringResource(R.string.black_list_title),
                 list = blacklist,
+                modifier = Modifier
+                    .fillMaxWidth(0.5f),
                 onEdit = { old, new ->
                     vm.update(old, new, DataKeys.BLACK_LIST_KEY)
                     notify.show()
@@ -146,6 +148,7 @@ private fun HorizontalView(vm: ApplicationViewModel) {
             ListWindow(
                 title = stringResource(R.string.white_list_title),
                 list = whitelist,
+                modifier = Modifier.fillMaxWidth(),
                 onEdit = { old, new ->
                     vm.update(old, new, DataKeys.WHITE_LIST_KEY)
                     notify.show()
@@ -232,6 +235,7 @@ private fun VerticalView(vm: ApplicationViewModel) {
             ListWindow(
                 title = stringResource(R.string.black_list_title),
                 list = blacklist,
+                modifier = Modifier.fillMaxWidth(),
                 onEdit = { old, new ->
                     vm.update(old, new, DataKeys.BLACK_LIST_KEY)
                     notify.show()
@@ -248,6 +252,7 @@ private fun VerticalView(vm: ApplicationViewModel) {
             ListWindow(
                 title = stringResource(R.string.white_list_title),
                 list = whitelist,
+                modifier = Modifier.fillMaxWidth(),
                 onEdit = { old, new ->
                     vm.update(old, new, DataKeys.WHITE_LIST_KEY)
                     notify.show()

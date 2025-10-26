@@ -38,6 +38,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bgflamer4ik.app.callblocker.SettingsHelper.numberCorrector
@@ -107,7 +108,8 @@ private fun GreetingsBlock(vm: ApplicationViewModel) {
                 HorizontalDivider(Modifier.padding(4.dp))
                 Text(
                     stringResource(R.string.home_screen_short_hint),
-                    maxLines = 3,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp
                 )
@@ -131,7 +133,10 @@ private fun GreetingsBlock(vm: ApplicationViewModel) {
                     keyboardType = KeyboardType.Unspecified,
                     imeAction = ImeAction.Done
                 ),
-                label = { Text(stringResource(R.string.number_fast_add)) },
+                label = { Text(
+                    stringResource(R.string.number_fast_add),
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1) },
                 onValueChange = { fastAdd = numberCorrector(it).number }
             )
             Spacer(Modifier.size(2.dp))
