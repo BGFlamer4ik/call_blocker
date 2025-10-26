@@ -7,7 +7,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bgflamer4ik.app.callblocker.database.DBHelper
@@ -93,7 +93,9 @@ fun HistoryWindow(
                                     .requiredWidth(320.dp),
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 20.sp,
-                                text = it.number
+                                text = it.number,
+                                overflow = TextOverflow.MiddleEllipsis,
+                                maxLines = 1
                             )
                             IconButton(
                                 modifier = Modifier
@@ -130,46 +132,37 @@ fun HistoryWindow(
                                     else stringResource(R.string.history_number_passed),
                                     modifier = Modifier
                                         .padding(8.dp)
-                                        .fillMaxWidth()
+                                        .fillMaxWidth(),
+                                    overflow = TextOverflow.MiddleEllipsis,
+                                    maxLines = 1
                                 )
                                 Text(
                                     DBHelper.patternDecrypt(it.params),
-                                    modifier = Modifier.fillMaxWidth()
+                                    modifier = Modifier.fillMaxWidth(),
+                                    overflow = TextOverflow.Ellipsis,
+                                    maxLines = 1
                                 )
-                                Row(
+                                Button(
                                     modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(8.dp),
-                                    horizontalArrangement = Arrangement.SpaceBetween
+                                        .padding(8.dp)
+                                        .fillMaxWidth(),
+                                    onClick = {
+                                        val mirrorKey = if (it.block) DataKeys.WHITE_LIST_KEY else DataKeys.BLACK_LIST_KEY
+                                        vm.add(
+                                            NumberData(
+                                                number = it.number,
+                                                hasPattern = false
+                                            ),
+                                            listName = mirrorKey
+                                        )
+                                    }
                                 ) {
-                                    Button(
-                                        modifier = Modifier.fillMaxWidth(0.5f),
-                                        onClick = {
-                                            vm.add(
-                                                NumberData(
-                                                    number = it.number,
-                                                    hasPattern = false
-                                                ),
-                                                listName = DataKeys.BLACK_LIST_KEY
-                                            )
-                                        }
-                                    ) {
-                                        Text("Block")
-                                    }
-                                    Button(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        onClick = {
-                                            vm.add(
-                                                NumberData(
-                                                    number = it.number,
-                                                    hasPattern = false
-                                                ),
-                                                listName = DataKeys.WHITE_LIST_KEY
-                                            )
-                                        }
-                                    ) {
-                                        Text(" or not?..")
-                                    }
+                                    Text(
+                                        text = if (it.block) stringResource(R.string.history_unblock_number)
+                                        else stringResource(R.string.history_unblock_number),
+                                        overflow = TextOverflow.Ellipsis,
+                                        maxLines = 1
+                                    )
                                 }
                             }
                         }

@@ -6,7 +6,6 @@ import android.app.role.RoleManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.util.Log
 import android.widget.Toast
@@ -36,7 +35,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,15 +42,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.bgflamer4ik.app.callblocker.database.DataKeys
-import com.bgflamer4ik.app.callblocker.service.NotificationKeys
-import com.bgflamer4ik.app.callblocker.service.NotificationService
 import io.github.cdimascio.dotenv.dotenv
-import kotlinx.coroutines.launch
 
 @Composable
 fun Settings(vm: ApplicationViewModel) {
@@ -86,7 +82,10 @@ fun Settings(vm: ApplicationViewModel) {
                     .fillMaxSize()
                     .padding(8.dp)
             ) {
-                Switches(vm, Modifier.horizontalScroll(rememberScrollState()))
+                Switches(
+                    vm,
+                    Modifier.horizontalScroll(rememberScrollState())
+                )
                 SpecialLinks(Modifier
                     .padding(8.dp)
                     .wrapContentHeight()
@@ -136,7 +135,6 @@ private fun Switches(vm: ApplicationViewModel, modifier: Modifier) {
 @Composable
 private fun SpecialLinks(modifier: Modifier) {
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
 
     val dotenv = dotenv {
         directory = "/assets"
@@ -145,9 +143,29 @@ private fun SpecialLinks(modifier: Modifier) {
 
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) {
         if (it != null) {
-            scope.launch {
-                SettingsHelper.importNumberList(context, it)
-            }
+            RequestDialogHelper.showConfirmationDialog(
+                title = context.getString(R.string.confirm_dialog_base_title),
+                message = context.getString(R.string.confirm_dialog_import_confirmation_message),
+                onConfirm = {
+                    if (SettingsHelper.importNumberList(context, it)) {
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.import_success),
+                            Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.import_failed),
+                            Toast.LENGTH_SHORT).show()
+                    }
+                },
+                onDiscard = {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.discarded),
+                        Toast.LENGTH_SHORT).show()
+                }
+            )
         }
     }
 
@@ -164,20 +182,16 @@ private fun SpecialLinks(modifier: Modifier) {
                     .padding(8.dp)
                     .weight(1f),
                 onClick = {
-                    notify(context,
-                        context.getString(R.string.settings_notify_export_start),
-                        NotificationKeys.PROGRESS)
-                    scope.launch {
-                        SettingsHelper.exportNumbersList(context, listOf(
-                            DataKeys.BLACK_LIST_KEY,
-                            DataKeys.WHITE_LIST_KEY
-                        )).onSuccess {
-                            notify(context, it)
-                        }.onFailure {
-                            notify(context,
-                                context.getString(R.string.settings_notify_export_failed),
-                                NotificationKeys.EMPTY_KEY)
-                        }
+                    if (SettingsHelper.exportNumbersList(context)) {
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.export_success),
+                            Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.export_failed),
+                            Toast.LENGTH_SHORT).show()
                     }
                 }
             ) {
@@ -209,28 +223,18 @@ private fun SpecialLinks(modifier: Modifier) {
                         )
                         context.startActivity(intent)
                     },
-                    onDiscard = {}
+                    onDiscard = {
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.discarded),
+                            Toast.LENGTH_SHORT).show()
+                    }
                 )
             }
         ) {
             Text(stringResource(R.string.check_github_for_updates))
         }
     }
-}
-
-private fun notify(context: Context, text: String, key: String) {
-    val intent = Intent(context, NotificationService::class.java)
-        .putExtra("key", key)
-        .putExtra("text", text)
-    context.startForegroundService(intent)
-}
-
-private fun notify(context: Context, fileUri: Uri) {
-    val intent = Intent(context, NotificationService::class.java)
-        .putExtra("key", NotificationKeys.DATA_EXPORT)
-        .putExtra("text", context.getString(R.string.settings_notify_export_success))
-        .putExtra("fileUri", fileUri.toString())
-    context.startForegroundService(intent)
 }
 
 @Composable
@@ -263,6 +267,7 @@ private fun SettingsBlock(
                 modifier = Modifier
                     .requiredWidth(320.dp),
                 text = text,
+                overflow = TextOverflow.Ellipsis,
                 maxLines = 3,
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp
@@ -340,7 +345,7 @@ fun RequestPermission(context: Context) {
             onDiscard = {
                 Toast.makeText(
                     context,
-                    "Permissions required! App may take issues!",
+                    context.getString(R.string.confirm_dialog_permission_discard_toast_message),
                     Toast.LENGTH_SHORT
                 ).show()
             }

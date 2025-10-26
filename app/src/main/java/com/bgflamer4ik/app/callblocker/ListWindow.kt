@@ -5,7 +5,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -13,12 +12,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
@@ -64,8 +63,8 @@ fun ListWindow(
     ) {
         AnimatedVisibility(
             modifier = Modifier
-                .padding(8.dp)
-                .horizontalScroll(rememberScrollState()),
+                .fillMaxSize()
+                .padding(8.dp),
             visible = list.isNotEmpty(),
             enter = fadeIn(),
             exit = fadeOut()
@@ -87,7 +86,7 @@ fun ListWindow(
                     ) {
                         OutlinedTextField(
                             modifier = Modifier
-                                .fillMaxWidth(0.75f),
+                                .fillMaxWidth(0.6f),
                             value = number,
                             enabled = isEdit,
                             onValueChange = { num -> number = numberCorrector(num).number }
@@ -96,12 +95,12 @@ fun ListWindow(
                         Row(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .requiredWidth(100.dp),
+                                .requiredWidth(120.dp),
                             horizontalArrangement = Arrangement.Absolute.Right
                         ) {
                             IconButton(
                                 modifier = Modifier
-                                    .requiredSize(50.dp)
+                                    .requiredHeight(50.dp)
                                     .fillMaxWidth(0.5f)
                                     .padding(8.dp)
                                     .border(2.dp,
@@ -135,7 +134,7 @@ fun ListWindow(
                             Spacer(Modifier.size(2.dp))
                             IconButton(
                                 modifier = Modifier
-                                    .requiredSize(50.dp)
+                                    .requiredHeight(50.dp)
                                     .fillMaxWidth(1f)
                                     .padding(8.dp)
                                     .border(2.dp,

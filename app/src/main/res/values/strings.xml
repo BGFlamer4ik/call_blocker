@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Call Blocker</string>
+    <string name="app_name" translatable="false">Call Blocker</string>
 
     <string name="home_screen">Home screen</string>
     <string name="lists_screen">Lists screen</string>
@@ -52,7 +52,7 @@
     <string name="settings_notify_export_failed">Export failed</string>
     <string name="settings_notify_export_success">Export success</string>
     <string name="settings_warning_external_links">External link!</string>
-    <string name="settings_warning_external_link_text">You\'re living app and go to external link, confirm?</string>
+    <string name="settings_warning_external_link_text">You\'re leaving app and go to external link, confirm?</string>
     <string name="check_github_for_updates">Check GitHub for new releases</string>
     <string name="hint_dialog_button">Show hint</string>
     <string name="help_1">Entered number can use masks:</string>
@@ -61,4 +61,14 @@
     <string name="help_4"> [0&#8211;9] &#8211; one number in range </string>
     <string name="help_5"> [^5] &#8211; not 5</string>
     <string name="help_6"> Example: +7990[0&#8211;2]?[^5]*</string>
+    <string name="import_success">Import finished successfully</string>
+    <string name="import_failed">Error while importing!</string>
+    <string name="export_success">Export finished successfully</string>
+    <string name="export_failed">Error while exporting</string>
+    <string name="confirm_dialog_base_title">Confirm activity?</string>
+    <string name="confirm_dialog_import_confirmation_message">Are you sure want to import this data to lists? (OLD DATA WILL BE REMOVED!)</string>
+    <string name="discarded">Discarded</string>
+    <string name="confirm_dialog_permission_discard_toast_message">Permission needed. App may take issues!</string>
+    <string name="history_block_number">Block number</string>
+    <string name="history_unblock_number">Unblock number</string>
 </resources>

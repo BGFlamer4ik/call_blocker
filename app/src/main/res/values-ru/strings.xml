@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Call Blocker</string>
     <string name="home_screen">Домашний экран</string>
     <string name="lists_screen">Списки</string>
     <string name="settings_screen">Настройки</string>
@@ -52,4 +51,14 @@
     <string name="help_4"> [0&#8211;9] &#8211; одна цифра в диапазоне </string>
     <string name="help_5"> [^5] &#8211; не 5</string>
     <string name="help_6"> Пример: +7990[0&#8211;2]?[^5]*</string>
+    <string name="import_success">Импорт успешен</string>
+    <string name="import_failed">Ошибка во время импорта</string>
+    <string name="export_success">Экспорт успешен</string>
+    <string name="export_failed">Ошибка во время экспорта</string>
+    <string name="confirm_dialog_base_title">Подтвердить действие?</string>
+    <string name="confirm_dialog_import_confirmation_message">Вы уверены, что хотите произвести импорт этой базы? (СТАРЫЕ ДАННЫЕ БУДУТ УДАЛЕНЫ)</string>
+    <string name="discarded">Отклонено</string>
+    <string name="confirm_dialog_permission_discard_toast_message">Разрешения необходимы для корректной работы приложения, возбожны баги!</string>
+    <string name="history_block_number">Блокировать номер</string>
+    <string name="history_unblock_number">Разблокировать номер</string>
 </resources>
